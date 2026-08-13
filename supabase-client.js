@@ -3,8 +3,8 @@
 // Preencha SUPABASE_URL e SUPABASE_ANON_KEY (Settings > API no Supabase)
 // ============================================================
 
-const SUPABASE_URL = "COLE_AQUI_A_PROJECT_URL";
-const SUPABASE_ANON_KEY = "COLE_AQUI_A_ANON_PUBLIC_KEY";
+const SUPABASE_URL = "https://www.tasklyn.com.br/";
+const SUPABASE_ANON_KEY = "sb_publishable_xpvxrLpz1GQ8t0e5K0_0MA_cYKNPoNG";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
