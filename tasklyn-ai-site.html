@@ -25,9 +25,12 @@
     font-family:'IBM Plex Sans', sans-serif;
     background:var(--paper);
     color:var(--ink);
-    display:flex;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
+  }
+  #app-content{
+    display:flex;
+    min-height:100vh;
   }
   h1,h2,h3,.display{
     font-family:'Fraunces', serif;
@@ -284,7 +287,8 @@
      RESPONSIVO — mesma página, layout se adapta ao mobile
      ====================================================== */
   @media (max-width: 860px){
-    body{flex-direction:column; padding-bottom:76px;}
+    body{padding-bottom:76px;}
+    #app-content{flex-direction:column;}
 
     /* sidebar vira barra inferior fixa */
     .sidebar{
@@ -334,6 +338,16 @@
 </head>
 <body>
 
+<div id="auth-screen" style="display:flex; flex-direction:column; gap:12px; max-width:340px; margin:80px auto; padding:24px; border:1px solid #DEDCD2; border-radius:14px; font-family:'IBM Plex Sans',sans-serif;">
+  <h2 style="font-family:'Fraunces',serif;">Entrar no Tasklyn</h2>
+  <input id="auth-email" type="email" placeholder="E-mail" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <input id="auth-password" type="password" placeholder="Senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Entrar</button>
+  <button onclick="handleSignup()" style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600;">Criar conta</button>
+  <p id="auth-message" style="font-size:12px; color:#B4553F;"></p>
+</div>
+
+<div id="app-content">
 <aside class="sidebar">
   <div class="brand">
     <div class="brand-mark">T</div>
@@ -719,6 +733,48 @@
   </section>
 
 </main>
+
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+
+<script>
+  async function handleLogin() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const msg = document.getElementById('auth-message');
+    try {
+      await signIn(email, password);
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
+  async function handleSignup() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const msg = document.getElementById('auth-message');
+    try {
+      await signUp(email, password);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Conta criada! Verifique seu e-mail para confirmar.';
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('app-content').style.display = 'none';
+    const user = await getCurrentUser();
+    if (user) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+    }
+  });
+</script>
 
 <script>
   document.querySelectorAll('.nav-item').forEach(function(btn){
