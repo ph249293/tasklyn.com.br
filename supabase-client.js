@@ -3,7 +3,7 @@
 // Preencha SUPABASE_URL e SUPABASE_ANON_KEY (Settings > API no Supabase)
 // ============================================================
 
-const https://pzzxmpdwtyhsmjwtapln.supabase.co
+const SUPABASE_URL = "https://pzzxmpdwtyhsmjwtapln.supabase.co"
 const SUPABASE_ANON_KEY = "sb_publishable_xpvxrLpz1GQ8t0e5K0_0MA_cYKNPoNG";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
