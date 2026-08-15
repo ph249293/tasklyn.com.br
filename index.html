@@ -383,7 +383,7 @@
         <h1 class="page-title" id="dashboard-greeting">Bom dia.</h1>
         <p class="page-sub">Aqui está o que a Tasklyn organizou e economizou para o seu time esta semana.</p>
       </div>
-      <button class="btn btn-primary">＋ Novo documento</button>
+      <button class="btn btn-primary" onclick="document.querySelector('[data-screen=documentos]').click(); document.getElementById('file-input').click();">＋ Novo documento</button>
     </div>
 
     <div class="stat-row">
@@ -694,7 +694,18 @@
     for (const file of files) {
       statusEl.textContent = `Enviando ${file.name}…`;
       try {
-        await uploadDocument(file);
+        const doc = await uploadDocument(file);
+        statusEl.textContent = `Analisando ${file.name} com IA…`;
+        refreshDocuments();
+        try {
+          await fetch('/api/process-document', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
+          });
+        } catch (procErr) {
+          console.error('Falha ao processar com IA:', procErr);
+        }
       } catch (err) {
         statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
         return;
@@ -746,16 +757,22 @@
         return;
       }
 
-      grid.innerHTML = docs.map(doc => `
+      grid.innerHTML = docs.map(doc => {
+        const isDue = doc.due_date && (new Date(doc.due_date) - new Date()) >= 0 && (new Date(doc.due_date) - new Date()) / 86400000 <= 30;
+        const stampClass = isDue ? 'due' : (doc.status === 'processed' ? 'processed' : 'summary');
+        const stampText = isDue ? `vence ${doc.due_date.split('-').reverse().join('/')}` : (doc.status === 'processed' ? 'ok' : 'processando');
+        return `
         <div class="doc-card">
           <div class="doc-top">
             <div class="file-ico">${fileIcon(doc.file_type)}</div>
-            <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'ok' : 'processando'}</span>
+            <span class="stamp ${stampClass}">${stampText}</span>
           </div>
           <div class="doc-name">${doc.name}</div>
           <div class="doc-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
+          ${doc.summary ? `<div class="doc-meta" style="color:var(--ink); line-height:1.4;">${doc.summary}</div>` : ''}
         </div>
-      `).join('');
+      `;
+      }).join('');
 
       activityBox.innerHTML = docs.slice(0, 5).map(doc => `
         <div class="activity-row">
