@@ -690,6 +690,7 @@
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
     const statusEl = document.getElementById('upload-status');
+    let hadError = false;
 
     for (const file of files) {
       statusEl.textContent = `Enviando ${file.name}…`;
@@ -698,20 +699,27 @@
         statusEl.textContent = `Analisando ${file.name} com IA…`;
         refreshDocuments();
         try {
-          await fetch('/api/process-document', {
+          const procResponse = await fetch('/api/process-document', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
           });
+          if (!procResponse.ok) {
+            let detail = '';
+            try { detail = (await procResponse.json()).error; } catch(e) { detail = await procResponse.text(); }
+            statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
+            hadError = true;
+          }
         } catch (procErr) {
-          console.error('Falha ao processar com IA:', procErr);
+          statusEl.textContent = `Erro ao analisar ${file.name}: ${procErr.message}`;
+          hadError = true;
         }
       } catch (err) {
         statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
         return;
       }
     }
-    statusEl.textContent = 'Envio concluído.';
+    if (!hadError) statusEl.textContent = 'Envio concluído.';
     e.target.value = '';
     refreshDocuments();
   });
