@@ -389,69 +389,28 @@
     <div class="stat-row">
       <div class="stat-card">
         <div class="stat-label">Documentos analisados</div>
-        <div class="stat-value">247</div>
-        <div class="stat-delta">↑ 32 esta semana</div>
+        <div class="stat-value" id="stat-doc-count">—</div>
+        <div class="stat-delta" id="stat-doc-delta"></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Tempo economizado</div>
-        <div class="stat-value">18h 40m</div>
-        <div class="stat-delta">↑ desde segunda-feira</div>
+        <div class="stat-label">Documentos processados</div>
+        <div class="stat-value" id="stat-processed-count">—</div>
+        <div class="stat-delta">pela IA</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Automações ativas</div>
-        <div class="stat-value">5</div>
-        <div class="stat-delta" style="color:var(--gold-deep)">2 vencimentos próximos</div>
+        <div class="stat-label">Vencimentos próximos</div>
+        <div class="stat-value" id="stat-due-count">—</div>
+        <div class="stat-delta" style="color:var(--gold-deep)">próximos 7 dias</div>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-head">
         <div class="panel-title">Atividade recente</div>
-        <a class="link">Ver tudo →</a>
+        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">Ver tudo →</a>
       </div>
-
-      <div class="activity-row">
-        <div class="activity-left">
-          <div class="file-ico">PDF</div>
-          <div>
-            <div class="activity-name">Contrato de locação — João Meireles</div>
-            <div class="activity-meta">Recebido por e-mail · há 12 min</div>
-          </div>
-        </div>
-        <span class="stamp processed">processado</span>
-      </div>
-
-      <div class="activity-row">
-        <div class="activity-left">
-          <div class="file-ico">XLS</div>
-          <div>
-            <div class="activity-name">Planilha de repasses — agosto</div>
-            <div class="activity-meta">Upload manual · há 1h</div>
-          </div>
-        </div>
-        <span class="stamp summary">resumido</span>
-      </div>
-
-      <div class="activity-row">
-        <div class="activity-left">
-          <div class="file-ico">DOC</div>
-          <div>
-            <div class="activity-name">Contrato comercial — Studio Nave</div>
-            <div class="activity-meta">Vence em 6 dias</div>
-          </div>
-        </div>
-        <span class="stamp due">vencimento</span>
-      </div>
-
-      <div class="activity-row">
-        <div class="activity-left">
-          <div class="file-ico">PDF</div>
-          <div>
-            <div class="activity-name">Laudo técnico — apto 302</div>
-            <div class="activity-meta">Organizado em "Vistorias" · há 3h</div>
-          </div>
-        </div>
-        <span class="stamp processed">processado</span>
+      <div id="dashboard-activity">
+        <p style="color:var(--ink-soft); font-size:13px;">Carregando…</p>
       </div>
     </div>
   </section>
@@ -497,42 +456,20 @@
 
     <div class="chat-shell">
       <div class="chat-window">
-        <div class="chat-log">
-          <div class="msg user">Qual contrato vence este mês?</div>
-          <div class="msg ai">
-            Encontrei 2 contratos vencendo em agosto: o da <strong>Studio Nave</strong> (dia 18) e o de <strong>Marina Costa</strong> (dia 27). Quer que eu prepare os avisos de renovação?
-            <div class="sources">
-              <span class="src-tag">contrato_studio_nave.pdf</span>
-              <span class="src-tag">contrato_marina_costa.pdf</span>
-            </div>
-          </div>
-          <div class="msg user">Encontre o documento do cliente João.</div>
-          <div class="msg ai">
-            João Meireles tem 3 documentos: contrato de locação, ficha cadastral e comprovante de pagamento de julho. O contrato foi recebido há 12 minutos.
-            <div class="sources">
-              <span class="src-tag">contrato_joao_meireles.pdf</span>
-            </div>
-          </div>
-          <div class="msg user">Resuma este arquivo.</div>
-          <div class="msg ai">
-            A planilha de repasses de agosto mostra 14 imóveis com repasse pendente, totalizando um valor a liquidar até dia 30. Quer o detalhamento por imóvel?
-            <div class="sources">
-              <span class="src-tag">repasses_agosto.xlsx</span>
-            </div>
-          </div>
+        <div class="chat-log" id="chat-log">
+          <div class="msg ai">Olá! Sou a IA da Tasklyn. Envie seus documentos na aba Documentos e depois me pergunte algo sobre eles aqui.</div>
         </div>
         <div class="chat-input">
-          <input type="text" placeholder="Pergunte algo sobre seus documentos…">
-          <button class="btn btn-primary">Enviar</button>
+          <input type="text" id="chat-input-field" placeholder="Pergunte algo sobre seus documentos…">
+          <button class="btn btn-primary" id="chat-send-btn">Enviar</button>
         </div>
       </div>
 
       <div class="suggested">
         <div class="suggested-title">Perguntas rápidas</div>
-        <div class="suggest-chip">Qual contrato vence este mês?</div>
-        <div class="suggest-chip">Encontre o documento do cliente João.</div>
-        <div class="suggest-chip">Resuma este arquivo.</div>
-        <div class="suggest-chip">Crie um e-mail baseado neste documento.</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Quais documentos vencem em breve?</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Resuma meus documentos mais recentes.</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Quantos documentos eu já enviei?</div>
       </div>
     </div>
   </section>
@@ -617,15 +554,18 @@
     </div>
 
     <div class="billing-toggle">
-      <button class="billing-opt active">Mensal</button>
-      <button class="billing-opt">Anual · 2 meses grátis</button>
+      <button class="billing-opt active" data-period="monthly">Mensal</button>
+      <button class="billing-opt" data-period="yearly">Anual · 2 meses grátis</button>
     </div>
 
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-name">Starter</div>
         <div class="plan-desc">Para times pequenos organizarem os primeiros documentos.</div>
-        <div class="plan-price"><span class="amount">R$49</span><span class="period">/mês</span></div>
+        <div class="plan-price">
+          <span class="amount" data-monthly="R$49" data-yearly="R$490">R$49</span>
+          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+        </div>
         <ul class="feat-list">
           <li class="feat-row">Até 300 documentos/mês</li>
           <li class="feat-row">2 usuários</li>
@@ -633,14 +573,17 @@
           <li class="feat-row">1 automação ativa</li>
           <li class="feat-row">Suporte por e-mail</li>
         </ul>
-        <button class="btn btn-ghost plan-cta">Começar agora</button>
+        <a class="btn btn-ghost plan-cta" data-link-monthly="COLE_AQUI_LINK_STARTER_MENSAL" data-link-yearly="COLE_AQUI_LINK_STARTER_ANUAL" href="#" target="_blank">Começar agora</a>
       </div>
 
       <div class="plan-card featured">
         <div class="plan-badge">Mais escolhido</div>
         <div class="plan-name">Pro</div>
         <div class="plan-desc">Para escritórios com múltiplos clientes e vencimentos recorrentes.</div>
-        <div class="plan-price"><span class="amount">R$149</span><span class="period">/mês</span></div>
+        <div class="plan-price">
+          <span class="amount" data-monthly="R$149" data-yearly="R$1.490">R$149</span>
+          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+        </div>
         <ul class="feat-list">
           <li class="feat-row">Até 2.000 documentos/mês</li>
           <li class="feat-row">10 usuários</li>
@@ -649,7 +592,7 @@
           <li class="feat-row">Alertas de vencimento</li>
           <li class="feat-row">Suporte prioritário</li>
         </ul>
-        <button class="btn plan-cta">Assinar Pro</button>
+        <a class="btn plan-cta" data-link-monthly="COLE_AQUI_LINK_PRO_MENSAL" data-link-yearly="COLE_AQUI_LINK_PRO_ANUAL" href="#" target="_blank">Assinar Pro</a>
       </div>
 
       <div class="plan-card">
@@ -787,12 +730,26 @@
 
   async function refreshDocuments() {
     const grid = document.getElementById('doc-grid');
+    const activityBox = document.getElementById('dashboard-activity');
     try {
       const docs = await listDocuments();
+      window._tasklynDocs = docs || [];
+
+      // Estatísticas
+      const total = docs ? docs.length : 0;
+      const processed = docs ? docs.filter(d => d.status === 'processed').length : 0;
+      const due = docs ? docs.filter(d => d.due_date && (new Date(d.due_date) - new Date()) / 86400000 <= 7 && (new Date(d.due_date) - new Date()) >= 0).length : 0;
+      document.getElementById('stat-doc-count').textContent = total;
+      document.getElementById('stat-processed-count').textContent = processed;
+      document.getElementById('stat-due-count').textContent = due;
+      document.getElementById('stat-doc-delta').textContent = total > 0 ? `${total} no total` : 'nenhum ainda';
+
       if (!docs || docs.length === 0) {
         grid.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhum documento enviado ainda. Use "Selecionar arquivos" acima.</p>';
+        activityBox.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhuma atividade ainda. Envie seu primeiro documento na aba Documentos.</p>';
         return;
       }
+
       grid.innerHTML = docs.map(doc => `
         <div class="doc-card">
           <div class="doc-top">
@@ -803,9 +760,79 @@
           <div class="doc-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
         </div>
       `).join('');
+
+      activityBox.innerHTML = docs.slice(0, 5).map(doc => `
+        <div class="activity-row">
+          <div class="activity-left">
+            <div class="file-ico">${fileIcon(doc.file_type)}</div>
+            <div>
+              <div class="activity-name">${doc.name}</div>
+              <div class="activity-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
+            </div>
+          </div>
+          <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'processado' : 'processando'}</span>
+        </div>
+      `).join('');
     } catch (err) {
       grid.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erro ao carregar documentos: ${err.message}</p>`;
+      activityBox.innerHTML = '';
     }
+  }
+
+  // ---------------- CHAT COM IA ----------------
+
+  function appendMessage(text, role) {
+    const log = document.getElementById('chat-log');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  async function sendChatMessage(text) {
+    if (!text.trim()) return;
+    appendMessage(text, 'user');
+    const thinkingEl = appendMessage('Pensando…', 'ai');
+
+    try {
+      const docs = window._tasklynDocs || [];
+      const docContext = docs.map(d => `- ${d.name} (categoria: ${d.category}, status: ${d.status}${d.due_date ? ', vence em ' + d.due_date : ''})`).join('\n');
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          documents: docContext || 'Nenhum documento enviado ainda.'
+        })
+      });
+
+      if (!response.ok) throw new Error('Falha ao conectar com a IA.');
+      const data = await response.json();
+      thinkingEl.textContent = data.reply;
+    } catch (err) {
+      thinkingEl.textContent = 'Erro ao falar com a IA: ' + err.message;
+    }
+  }
+
+  document.getElementById('chat-send-btn').addEventListener('click', () => {
+    const input = document.getElementById('chat-input-field');
+    sendChatMessage(input.value);
+    input.value = '';
+  });
+
+  document.getElementById('chat-input-field').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      sendChatMessage(e.target.value);
+      e.target.value = '';
+    }
+  });
+
+  function sendSuggested(el) {
+    document.querySelector('[data-screen="chat"]').click();
+    sendChatMessage(el.textContent);
   }
 </script>
 
@@ -825,6 +852,27 @@
     chip.addEventListener('click', function(){
       chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
+    });
+  });
+
+  // ---------------- TOGGLE MENSAL / ANUAL ----------------
+  function applyBillingPeriod(period) {
+    document.querySelectorAll('.plan-price .amount, .plan-price .period').forEach(function(el){
+      const value = period === 'yearly' ? el.dataset.yearly : el.dataset.monthly;
+      if (value) el.textContent = value;
+    });
+    document.querySelectorAll('.plan-cta[data-link-monthly]').forEach(function(btn){
+      const link = period === 'yearly' ? btn.dataset.linkYearly : btn.dataset.linkMonthly;
+      if (link) btn.href = link;
+    });
+  }
+  applyBillingPeriod('monthly'); // preenche os links assim que a página carrega
+
+  document.querySelectorAll('.billing-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      document.querySelectorAll('.billing-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      applyBillingPeriod(opt.dataset.period);
     });
   });
 </script>
