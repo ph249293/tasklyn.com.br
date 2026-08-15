@@ -363,12 +363,13 @@
     <button class="nav-item" data-screen="automacoes"><span class="nav-icon">◎</span> Automações</button>
     <button class="nav-item" data-screen="planos"><span class="nav-icon">◈</span> Planos</button>
   </nav>
-  <div class="sidebar-foot">
-    <div class="avatar">IM</div>
-    <div>
-      <div class="name">Imobiliária Vértice</div>
+  <div class="sidebar-foot" id="sidebar-foot">
+    <div class="avatar" id="user-avatar">?</div>
+    <div style="min-width:0; flex:1;">
+      <div class="name" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
       <div class="plan">Plano Pro</div>
     </div>
+    <button id="logout-btn" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
   </div>
 </aside>
 
@@ -468,68 +469,19 @@
     <div class="dropzone">
       <div class="dropzone-title">Arraste arquivos aqui</div>
       <div class="dropzone-sub">PDF, Word, Excel ou imagens · a IA identifica o tipo e organiza sozinha</div>
-      <button class="btn btn-ghost">Selecionar arquivos</button>
+      <input type="file" id="file-input" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*">
+      <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">Selecionar arquivos</button>
+      <p id="upload-status" style="font-size:12px; color:var(--ink-soft); margin-top:10px;"></p>
     </div>
 
     <div class="toolbar">
       <div class="filters">
-        <button class="chip active">Todos (247)</button>
-        <button class="chip">Contratos (58)</button>
-        <button class="chip">Financeiro (91)</button>
-        <button class="chip">Clientes (73)</button>
-        <button class="chip">Outros (25)</button>
+        <button class="chip active">Todos</button>
       </div>
     </div>
 
-    <div class="doc-grid">
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">PDF</div>
-          <span class="stamp processed">ok</span>
-        </div>
-        <div class="doc-name">Contrato de locação — João Meireles</div>
-        <div class="doc-meta">2.1 MB · Contratos · há 12 min</div>
-      </div>
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">XLS</div>
-          <span class="stamp summary">resumo</span>
-        </div>
-        <div class="doc-name">Repasses — agosto 2026</div>
-        <div class="doc-meta">640 KB · Financeiro · há 1h</div>
-      </div>
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">DOC</div>
-          <span class="stamp due">vence 18/08</span>
-        </div>
-        <div class="doc-name">Contrato comercial — Studio Nave</div>
-        <div class="doc-meta">890 KB · Contratos · há 3h</div>
-      </div>
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">IMG</div>
-          <span class="stamp processed">ok</span>
-        </div>
-        <div class="doc-name">Vistoria — apto 302, bloco B</div>
-        <div class="doc-meta">4.4 MB · Outros · ontem</div>
-      </div>
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">PDF</div>
-          <span class="stamp processed">ok</span>
-        </div>
-        <div class="doc-name">Ficha cadastral — Marina Costa</div>
-        <div class="doc-meta">1.2 MB · Clientes · ontem</div>
-      </div>
-      <div class="doc-card">
-        <div class="doc-top">
-          <div class="file-ico">XLS</div>
-          <span class="stamp processed">ok</span>
-        </div>
-        <div class="doc-name">Fluxo de caixa — Q3</div>
-        <div class="doc-meta">310 KB · Financeiro · 2 dias</div>
-      </div>
+    <div class="doc-grid" id="doc-grid">
+      <p style="color:var(--ink-soft); font-size:13px;">Carregando documentos…</p>
     </div>
   </section>
 
@@ -748,6 +700,8 @@
       await signIn(email, password);
       document.getElementById('auth-screen').style.display = 'none';
       document.getElementById('app-content').style.display = 'flex';
+      const user = await getCurrentUser();
+      initApp(user);
     } catch (err) {
       msg.textContent = 'Erro: ' + err.message;
     }
@@ -772,8 +726,85 @@
     if (user) {
       document.getElementById('auth-screen').style.display = 'none';
       document.getElementById('app-content').style.display = 'flex';
+      initApp(user);
     }
   });
+
+  // ---------------- USUÁRIO / LOGOUT ----------------
+
+  function initApp(user) {
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-avatar').textContent = user.email.slice(0, 2).toUpperCase();
+    refreshDocuments();
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await signOut();
+    window.location.reload();
+  });
+
+  // ---------------- UPLOAD DE DOCUMENTOS ----------------
+
+  document.getElementById('file-input').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+    const statusEl = document.getElementById('upload-status');
+
+    for (const file of files) {
+      statusEl.textContent = `Enviando ${file.name}…`;
+      try {
+        await uploadDocument(file);
+      } catch (err) {
+        statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
+        return;
+      }
+    }
+    statusEl.textContent = 'Envio concluído.';
+    e.target.value = '';
+    refreshDocuments();
+  });
+
+  function fileIcon(fileType) {
+    if (!fileType) return 'DOC';
+    if (fileType.includes('pdf')) return 'PDF';
+    if (fileType.includes('sheet') || fileType.includes('excel')) return 'XLS';
+    if (fileType.includes('word')) return 'DOC';
+    if (fileType.includes('image')) return 'IMG';
+    return 'DOC';
+  }
+
+  function timeAgo(dateStr) {
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return 'agora mesmo';
+    if (mins < 60) return `há ${mins} min`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `há ${hours}h`;
+    return `há ${Math.floor(hours / 24)} dias`;
+  }
+
+  async function refreshDocuments() {
+    const grid = document.getElementById('doc-grid');
+    try {
+      const docs = await listDocuments();
+      if (!docs || docs.length === 0) {
+        grid.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhum documento enviado ainda. Use "Selecionar arquivos" acima.</p>';
+        return;
+      }
+      grid.innerHTML = docs.map(doc => `
+        <div class="doc-card">
+          <div class="doc-top">
+            <div class="file-ico">${fileIcon(doc.file_type)}</div>
+            <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'ok' : 'processando'}</span>
+          </div>
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
+        </div>
+      `).join('');
+    } catch (err) {
+      grid.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erro ao carregar documentos: ${err.message}</p>`;
+    }
+  }
 </script>
 
 <script>
