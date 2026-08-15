@@ -380,7 +380,7 @@
     <div class="topline">
       <div>
         <div class="eyebrow">Visão geral</div>
-        <h1 class="page-title">Bom dia, Vértice.</h1>
+        <h1 class="page-title" id="dashboard-greeting">Bom dia.</h1>
         <p class="page-sub">Aqui está o que a Tasklyn organizou e economizou para o seu time esta semana.</p>
       </div>
       <button class="btn btn-primary">＋ Novo documento</button>
@@ -735,6 +735,8 @@
   function initApp(user) {
     document.getElementById('user-email').textContent = user.email;
     document.getElementById('user-avatar').textContent = user.email.slice(0, 2).toUpperCase();
+    const firstName = user.email.split('@')[0];
+    document.getElementById('dashboard-greeting').textContent = `Bom dia, ${firstName}.`;
     refreshDocuments();
   }
 
