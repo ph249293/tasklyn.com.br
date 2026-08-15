@@ -383,7 +383,7 @@
         <h1 class="page-title" id="dashboard-greeting">Bom dia.</h1>
         <p class="page-sub">Aqui está o que a Tasklyn organizou e economizou para o seu time esta semana.</p>
       </div>
-      <button class="btn btn-primary" onclick="document.querySelector('[data-screen=documentos]').click(); document.getElementById('file-input').click();">＋ Novo documento</button>
+      <button class="btn btn-primary" onclick="goToDocumentosAndUpload()">＋ Novo documento</button>
     </div>
 
     <div class="stat-row">
@@ -855,6 +855,16 @@
   function sendSuggested(el) {
     document.querySelector('[data-screen="chat"]').click();
     sendChatMessage(el.textContent);
+  }
+
+  function goToDocumentosAndUpload() {
+    // troca de aba diretamente via classes, sem disparar um segundo clique
+    // (dois .click() em sequência podem perder a permissão do Safari pra abrir o seletor de arquivo)
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelector('[data-screen="documentos"]').classList.add('active');
+    document.getElementById('documentos').classList.add('active');
+    document.getElementById('file-input').click();
   }
 </script>
 
