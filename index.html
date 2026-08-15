@@ -805,7 +805,16 @@
         })
       });
 
-      if (!response.ok) throw new Error('Falha ao conectar com a IA.');
+      if (!response.ok) {
+        let detail = '';
+        try {
+          const errData = await response.json();
+          detail = errData.error || JSON.stringify(errData);
+        } catch (e) {
+          detail = await response.text();
+        }
+        throw new Error(`(${response.status}) ${detail}`);
+      }
       const data = await response.json();
       thinkingEl.textContent = data.reply;
     } catch (err) {
