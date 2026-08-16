@@ -113,12 +113,19 @@ function showPlans(user){
  c.innerHTML=`<h2>Escolha seu plano</h2>
  <p style="color:#64748b">O Dashboard e as funções do Tasklyn ficam disponíveis somente após a confirmação da assinatura.</p>
  <div style="display:grid;gap:10px;margin-top:18px">
- <button class="btn secondary" onclick="activateDemoPlan('Starter')">Starter — R$49/mês</button>
- <button class="btn primary" onclick="activateDemoPlan('Pro')">Pro — R$149/mês</button>
+ <button class="btn secondary" onclick="goToCheckout('Starter mensal','https://buy.stripe.com/fZucN5ebP5xk6rh5FeaMU02')">Starter — mensal</button>
+ <button class="btn secondary" onclick="goToCheckout('Starter anual','https://buy.stripe.com/6oU9ATd7L5xk5nd4BaaMU05')">Starter — anual</button>
+ <button class="btn primary" onclick="goToCheckout('Pro mensal','https://buy.stripe.com/4gMeVdebP4tgaHxebKaMU04')">Pro — mensal</button>
+ <button class="btn primary" onclick="goToCheckout('Pro anual','https://buy.stripe.com/dRm5kDaZDcZM8zp4BaaMU03')">Pro — anual</button>
  <button class="btn secondary" onclick="alert('Enterprise: contato comercial para definir o plano e o checkout.')">Enterprise — Personalizado</button>
  </div>
- <p style="font-size:12px;color:#94a3b8;margin-top:15px">Esta versão é um protótipo. No ambiente real, esses botões devem abrir o checkout do seu provedor de pagamentos e o acesso só deve ser ativado depois do webhook de pagamento aprovado.</p>`;
+ <p style="font-size:12px;color:#94a3b8;margin-top:15px">Você será direcionado ao checkout seguro da Stripe. No ambiente real, o acesso ao Dashboard deve ser ativado pelo backend após a confirmação do pagamento.</p>`;
  document.getElementById('modal').classList.add('open');
+}
+function goToCheckout(plan,url){
+ const user=JSON.parse(localStorage.getItem('tasklynUser')||'null');
+ if(user){ user.selectedPlan=plan; localStorage.setItem('tasklynUser',JSON.stringify(user)); }
+ window.location.href=url;
 }
 function activateDemoPlan(plan){
  const user=JSON.parse(localStorage.getItem('tasklynUser')||'null');
