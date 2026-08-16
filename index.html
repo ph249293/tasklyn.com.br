@@ -302,6 +302,7 @@
       z-index:30;
     }
     .brand, .sidebar-foot{display:none;}
+    #mobile-account-bar{display:flex !important;}
     nav{flex-direction:row; width:100%; padding:0; gap:0; justify-content:space-around;}
     .nav-item{
       flex-direction:column; gap:3px; align-items:center; justify-content:center;
@@ -378,15 +379,22 @@
     <button class="nav-item" data-screen="planos"><span class="nav-icon">◈</span> Planos</button>
   </nav>
   <div class="sidebar-foot" id="sidebar-foot">
-    <div class="avatar" id="user-avatar">?</div>
+    <div class="avatar user-avatar-el" id="user-avatar">?</div>
     <div style="min-width:0; flex:1;">
-      <div class="name" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
+      <div class="name user-email-el" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
       <div class="plan">Plano Pro</div>
     </div>
-    <button id="account-settings-btn" title="Conta" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
-    <button id="logout-btn" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
+    <button class="account-settings-btn-el" title="Conta" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
+    <button class="logout-btn-el" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
   </div>
 </aside>
+
+<!-- Barra de conta visível só no mobile (a barra lateral vira nav inferior e esconde o sidebar-foot) -->
+<div id="mobile-account-bar" style="display:none; position:fixed; top:0; right:0; z-index:40; padding:10px 14px; align-items:center; gap:10px; background:var(--paper); border-bottom-left-radius:12px;">
+  <span class="user-email-el" style="font-size:11.5px; color:var(--ink-soft); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</span>
+  <button class="account-settings-btn-el" title="Conta" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:14px;">⚙</button>
+  <button class="logout-btn-el" title="Sair" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:15px;">⏻</button>
+</div>
 
 <div id="account-modal" style="display:none; position:fixed; inset:0; background:rgba(22,35,61,0.5); z-index:50; align-items:center; justify-content:center;">
   <div style="background:#FBFBF8; border-radius:14px; padding:24px; max-width:340px; width:90%; font-family:'IBM Plex Sans',sans-serif;">
@@ -772,8 +780,8 @@
 
   function initApp(user) {
     window._tasklynUser = user;
-    document.getElementById('user-email').textContent = user.email;
-    document.getElementById('user-avatar').textContent = user.email.slice(0, 2).toUpperCase();
+    document.querySelectorAll('.user-email-el').forEach(el => el.textContent = user.email);
+    document.querySelectorAll('.user-avatar-el').forEach(el => el.textContent = user.email.slice(0, 2).toUpperCase());
     const firstName = user.email.split('@')[0];
     document.getElementById('dashboard-greeting').textContent = `Bom dia, ${firstName}.`;
     applyBillingPeriod(document.querySelector('.billing-opt.active')?.dataset.period || 'monthly');
@@ -813,15 +821,15 @@
     }
   }
 
-  document.getElementById('logout-btn').addEventListener('click', async () => {
+  document.querySelectorAll('.logout-btn-el').forEach(btn => btn.addEventListener('click', async () => {
     await signOut();
     window.location.reload();
-  });
+  }));
 
-  document.getElementById('account-settings-btn').addEventListener('click', () => {
+  document.querySelectorAll('.account-settings-btn-el').forEach(btn => btn.addEventListener('click', () => {
     document.getElementById('account-modal-message').textContent = '';
     document.getElementById('account-modal').style.display = 'flex';
-  });
+  }));
 
   async function handleUpdateEmail() {
     const newEmail = document.getElementById('new-email-field').value;
