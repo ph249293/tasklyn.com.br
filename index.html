@@ -672,18 +672,22 @@
     }
     try {
       await signUp(email, password);
-      const user = await getCurrentUser();
-      if (user) {
-        // conta já vem ativa (sem confirmação de e-mail) — entra direto
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('app-content').style.display = 'flex';
-        initApp(user);
-      } else {
-        msg.style.color = '#4F7863';
-        msg.textContent = 'Conta criada! Faça login para continuar.';
-      }
     } catch (err) {
       msg.textContent = 'Erro: ' + err.message;
+      return;
+    }
+    // tenta entrar imediatamente com as mesmas credenciais.
+    // Se a confirmação por e-mail ainda estiver exigida no Supabase, isso falha
+    // com uma mensagem clara em vez de travar a tela silenciosamente.
+    try {
+      await signIn(email, password);
+      const user = await getCurrentUser();
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+      initApp(user);
+    } catch (err) {
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Conta criada, mas o login automático falhou (' + err.message + '). Isso geralmente significa que a confirmação por e-mail ainda está ativada no Supabase.';
     }
   }
 
