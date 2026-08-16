@@ -672,8 +672,16 @@
     }
     try {
       await signUp(email, password);
-      msg.style.color = '#4F7863';
-      msg.textContent = 'Conta criada! Verifique seu e-mail para confirmar.';
+      const user = await getCurrentUser();
+      if (user) {
+        // conta já vem ativa (sem confirmação de e-mail) — entra direto
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app-content').style.display = 'flex';
+        initApp(user);
+      } else {
+        msg.style.color = '#4F7863';
+        msg.textContent = 'Conta criada! Faça login para continuar.';
+      }
     } catch (err) {
       msg.textContent = 'Erro: ' + err.message;
     }
