@@ -344,8 +344,12 @@
   <h2 style="font-family:'Fraunces',serif;">Entrar no Tasklyn</h2>
   <input id="auth-email" type="email" placeholder="E-mail" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
   <input id="auth-password" type="password" placeholder="Senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <label style="display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#3B4A68; line-height:1.4; cursor:pointer;">
+    <input type="checkbox" id="auth-accept-terms" style="margin-top:2px; flex-shrink:0;" onchange="document.getElementById('signup-btn').disabled = !this.checked; document.getElementById('signup-btn').style.opacity = this.checked ? '1' : '.5';">
+    Li e concordo com os <a href="/termos.html" target="_blank" style="color:#9C7626; font-weight:600;">Termos de Uso</a> e a <a href="/privacidade.html" target="_blank" style="color:#9C7626; font-weight:600;">Política de Privacidade</a>.
+  </label>
   <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Entrar</button>
-  <button onclick="handleSignup()" style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600;">Criar conta</button>
+  <button id="signup-btn" onclick="handleSignup()" disabled style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600; opacity:.5;">Criar conta</button>
   <p id="auth-message" style="font-size:12px; color:#B4553F;"></p>
 </div>
 
@@ -662,6 +666,10 @@
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     const msg = document.getElementById('auth-message');
+    if (!document.getElementById('auth-accept-terms').checked) {
+      msg.textContent = 'Você precisa aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.';
+      return;
+    }
     try {
       await signUp(email, password);
       msg.style.color = '#4F7863';
