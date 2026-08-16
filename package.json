@@ -1,0 +1,11 @@
+{
+  "name": "tasklyn-api",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.7.2",
+    "xlsx": "^0.18.5"
+  }
+}
