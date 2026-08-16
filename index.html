@@ -705,8 +705,9 @@
             body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
           });
           if (!procResponse.ok) {
-            let detail = '';
-            try { detail = (await procResponse.json()).error; } catch(e) { detail = await procResponse.text(); }
+            const rawText = await procResponse.text();
+            let detail = rawText;
+            try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
             statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
             hadError = true;
           }
@@ -831,13 +832,9 @@
       });
 
       if (!response.ok) {
-        let detail = '';
-        try {
-          const errData = await response.json();
-          detail = errData.error || JSON.stringify(errData);
-        } catch (e) {
-          detail = await response.text();
-        }
+        const rawText = await response.text();
+        let detail = rawText;
+        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* mantém texto puro */ }
         throw new Error(`(${response.status}) ${detail}`);
       }
       const data = await response.json();
