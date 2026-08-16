@@ -350,7 +350,15 @@
   </label>
   <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Entrar</button>
   <button id="signup-btn" onclick="handleSignup()" disabled style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600; opacity:.5;">Criar conta</button>
+  <a onclick="handleForgotPassword()" style="font-size:12px; color:#9C7626; font-weight:600; text-align:center; cursor:pointer;">Esqueci minha senha</a>
   <p id="auth-message" style="font-size:12px; color:#B4553F;"></p>
+</div>
+
+<div id="reset-password-screen" style="display:none; flex-direction:column; gap:12px; max-width:340px; margin:80px auto; padding:24px; border:1px solid #DEDCD2; border-radius:14px; font-family:'IBM Plex Sans',sans-serif;">
+  <h2 style="font-family:'Fraunces',serif;">Definir nova senha</h2>
+  <input id="reset-password-field" type="password" placeholder="Nova senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <button onclick="handleSetNewPassword()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Salvar nova senha</button>
+  <p id="reset-password-message" style="font-size:12px; color:#B4553F;"></p>
 </div>
 
 <div id="app-content">
@@ -375,9 +383,27 @@
       <div class="name" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
       <div class="plan">Plano Pro</div>
     </div>
+    <button id="account-settings-btn" title="Conta" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
     <button id="logout-btn" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
   </div>
 </aside>
+
+<div id="account-modal" style="display:none; position:fixed; inset:0; background:rgba(22,35,61,0.5); z-index:50; align-items:center; justify-content:center;">
+  <div style="background:#FBFBF8; border-radius:14px; padding:24px; max-width:340px; width:90%; font-family:'IBM Plex Sans',sans-serif;">
+    <h2 style="font-family:'Fraunces',serif; margin-bottom:14px;">Configurações da conta</h2>
+
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar e-mail</label>
+    <input id="new-email-field" type="email" placeholder="Novo e-mail" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
+    <button onclick="handleUpdateEmail()" class="btn btn-ghost" style="width:100%; justify-content:center; margin-bottom:16px;">Salvar novo e-mail</button>
+
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar senha</label>
+    <input id="new-password-field" type="password" placeholder="Nova senha" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
+    <button onclick="handleUpdateAccountPassword()" class="btn btn-ghost" style="width:100%; justify-content:center;">Salvar nova senha</button>
+
+    <p id="account-modal-message" style="font-size:12px; color:#B4553F; margin-top:12px;"></p>
+    <button onclick="document.getElementById('account-modal').style.display='none';" style="width:100%; margin-top:14px; background:none; border:none; color:#9FADC7; font-size:13px; cursor:pointer;">Fechar</button>
+  </div>
+</div>
 
 <main>
 
@@ -691,8 +717,49 @@
     }
   }
 
+  async function handleForgotPassword() {
+    const email = document.getElementById('auth-email').value;
+    const msg = document.getElementById('auth-message');
+    if (!email) {
+      msg.textContent = 'Digite seu e-mail no campo acima primeiro, depois toque em "Esqueci minha senha".';
+      return;
+    }
+    try {
+      await resetPassword(email);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Enviamos um link para redefinir sua senha em ' + email + '. Verifique sua caixa de entrada.';
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
+  async function handleSetNewPassword() {
+    const newPassword = document.getElementById('reset-password-field').value;
+    const msg = document.getElementById('reset-password-message');
+    if (!newPassword || newPassword.length < 6) {
+      msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
+      return;
+    }
+    try {
+      await updatePassword(newPassword);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Senha atualizada! Redirecionando…';
+      setTimeout(() => { window.location.href = '/'; }, 1500);
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
   window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('app-content').style.display = 'none';
+
+    // Se o link veio de um e-mail de recuperação de senha, mostra a tela de nova senha
+    if (window.location.hash.includes('type=recovery')) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('reset-password-screen').style.display = 'flex';
+      return;
+    }
+
     const user = await getCurrentUser();
     if (user) {
       document.getElementById('auth-screen').style.display = 'none';
@@ -750,6 +817,40 @@
     await signOut();
     window.location.reload();
   });
+
+  document.getElementById('account-settings-btn').addEventListener('click', () => {
+    document.getElementById('account-modal-message').textContent = '';
+    document.getElementById('account-modal').style.display = 'flex';
+  });
+
+  async function handleUpdateEmail() {
+    const newEmail = document.getElementById('new-email-field').value;
+    const msg = document.getElementById('account-modal-message');
+    if (!newEmail) { msg.textContent = 'Digite o novo e-mail.'; return; }
+    try {
+      await updateEmail(newEmail);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Verifique o novo e-mail para confirmar a troca.';
+    } catch (err) {
+      msg.style.color = '#B4553F';
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
+  async function handleUpdateAccountPassword() {
+    const newPassword = document.getElementById('new-password-field').value;
+    const msg = document.getElementById('account-modal-message');
+    if (!newPassword || newPassword.length < 6) { msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; return; }
+    try {
+      await updatePassword(newPassword);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Senha atualizada com sucesso.';
+      document.getElementById('new-password-field').value = '';
+    } catch (err) {
+      msg.style.color = '#B4553F';
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
 
   // ---------------- UPLOAD DE DOCUMENTOS ----------------
 
