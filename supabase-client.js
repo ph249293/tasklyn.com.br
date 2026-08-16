@@ -145,3 +145,25 @@ async function getProfilePlan() {
 
   return data?.plan || "free";
 }
+
+// ---------------- RECUPERAÇÃO DE SENHA E CONTA ----------------
+
+// Envia um e-mail com link para redefinir a senha
+async function resetPassword(email) {
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://tasklyn.com.br/"
+  });
+  if (error) throw error;
+}
+
+// Define uma nova senha (usado depois de clicar no link de recuperação)
+async function updatePassword(newPassword) {
+  const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+  if (error) throw error;
+}
+
+// Troca o e-mail da conta logada
+async function updateEmail(newEmail) {
+  const { error } = await supabaseClient.auth.updateUser({ email: newEmail });
+  if (error) throw error;
+}
