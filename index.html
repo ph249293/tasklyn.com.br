@@ -1,158 +1,946 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tasklyn AI — Produtividade inteligente</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tasklyn AI — Protótipo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f8fafc;color:#0f172a}
-button,input{font:inherit}.hidden{display:none!important}.nav{height:70px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 6%;position:sticky;top:0;z-index:10}.logo{font-size:23px;font-weight:800}.logo span{color:#2563eb}.navlinks{display:flex;gap:18px;align-items:center}.navlinks a{color:#475569;text-decoration:none;font-size:14px}.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:750;cursor:pointer}.primary{background:#2563eb;color:white}.secondary{background:#eff6ff;color:#1d4ed8}
-.hero{padding:80px 7%;text-align:center;background:radial-gradient(circle at 50% 0,#dbeafe,transparent 45%)}.badge{display:inline-block;background:#dbeafe;color:#1d4ed8;padding:7px 12px;border-radius:999px;font-size:13px;font-weight:700}.hero h1{font-size:clamp(42px,6vw,72px);line-height:1.02;letter-spacing:-3px;max-width:850px;margin:22px auto 18px}.hero p{max-width:680px;margin:auto auto 28px;color:#64748b;font-size:18px;line-height:1.6}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.demo{max-width:1080px;margin:-20px auto 70px;padding:0 18px}.window{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 25px 70px #0f172a18}.bar{padding:13px 17px;border-bottom:1px solid #e2e8f0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#cbd5e1;margin-right:5px}.mock{display:grid;grid-template-columns:210px 1fr;min-height:380px}.side{background:#0f172a;color:#fff;padding:22px}.side p{color:#cbd5e1;font-size:13px;padding:8px 0}.main{padding:28px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:18px}.stat b{display:block;font-size:24px;margin-top:6px}.section{max-width:1150px;margin:auto;padding:70px 7%}.section h2{text-align:center;font-size:38px;margin:0 0 12px}.lead{text-align:center;color:#64748b;max-width:650px;margin:0 auto 35px;line-height:1.6}.features,.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature,.price{background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:22px}.feature p,.price li{color:#64748b;line-height:1.6}.price .value{font-size:31px;font-weight:800;margin:13px 0}.popular{border:2px solid #2563eb}.cta{margin:30px 7% 70px;background:#0f172a;color:#fff;border-radius:22px;padding:50px;text-align:center}.cta p{color:#cbd5e1}
-.modal{display:none;position:fixed;inset:0;background:#0f172a88;z-index:30;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.form{width:min(450px,100%);background:#fff;border-radius:18px;padding:30px;box-shadow:0 25px 70px #0004}.close{float:right;border:0;background:none;font-size:24px;color:#64748b;cursor:pointer}.form h2{margin-top:0}.form label{display:block;font-size:13px;font-weight:700;margin:12px 0 6px}.form input{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px}.form .btn{width:100%;margin-top:18px}.msg{padding:11px;border-radius:9px;margin-top:12px;font-size:13px}.success{background:#dcfce7;color:#166534}.error{background:#fee2e2;color:#991b1b}
-#dashboard{min-height:100vh;background:#f8fafc}.dashnav{height:70px;background:#fff;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;padding:0 5%}.dash{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 70px)}.dashside{background:#0f172a;color:#fff;padding:22px}.dashside button{display:block;width:100%;text-align:left;background:none;border:0;color:#cbd5e1;padding:12px 8px;border-radius:8px;cursor:pointer}.dashside button.active,.dashside button:hover{background:#1e293b;color:#fff}.dashmain{padding:35px 5%;max-width:1250px;width:100%;margin:auto}.dashstats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.panel{background:#fff;border:1px solid #e2e8f0;border-radius:15px;padding:20px;margin-top:18px}.panel h3{margin-top:0}.doc{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e2e8f0;padding:14px 0}.tag{background:#dcfce7;color:#166534;padding:5px 9px;border-radius:999px;font-size:12px}.assistant{display:flex;gap:10px}.assistant input{flex:1;padding:13px;border:1px solid #cbd5e1;border-radius:10px}
-footer{padding:30px 7%;border-top:1px solid #e2e8f0;color:#64748b}
-@media(max-width:760px){.navlinks a{display:none}.mock{grid-template-columns:1fr}.side{display:none}.stats,.features,.pricing,.dashstats{grid-template-columns:1fr}.dash{grid-template-columns:1fr}.dashside{display:flex;overflow:auto;gap:5px}.dashside button{min-width:max-content}.hero h1{letter-spacing:-2px}.cta{margin:20px 5% 50px;padding:35px 20px}}
+  :root{
+    --ink:#16233D;
+    --ink-soft:#3B4A68;
+    --paper:#F1F1EC;
+    --paper-card:#FBFBF8;
+    --gold:#C89B3C;
+    --gold-deep:#9C7626;
+    --sage:#4F7863;
+    --sage-soft:#DCE7DF;
+    --line:#DEDCD2;
+    --danger:#B4553F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:'IBM Plex Sans', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app-content{
+    display:flex;
+    min-height:100vh;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    width:236px;
+    background:var(--ink);
+    color:#EDEFF5;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+    padding:28px 0 20px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    padding:0 24px 26px;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+    margin-bottom:18px;
+  }
+  .brand-mark{
+    width:34px; height:34px; border-radius:50%;
+    background:var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:700; color:var(--ink);
+    font-size:16px;
+    flex-shrink:0;
+  }
+  .brand-name{font-family:'Fraunces',serif; font-size:19px; font-weight:600;}
+  .brand-sub{font-size:10.5px; color:#9FADC7; text-transform:uppercase; letter-spacing:.08em; margin-top:1px;}
+
+  nav{display:flex; flex-direction:column; gap:2px; padding:0 12px;}
+  .nav-item{
+    display:flex; align-items:center; gap:12px;
+    padding:11px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    color:#C3CBDE;
+    font-size:14.5px;
+    font-weight:500;
+    transition:background .15s, color .15s;
+    position:relative;
+    border:none; background:none; width:100%; text-align:left;
+    font-family:'IBM Plex Sans',sans-serif;
+  }
+  .nav-item:hover{background:rgba(255,255,255,0.06); color:#fff;}
+  .nav-item.active{background:rgba(200,155,60,0.16); color:#fff;}
+  .nav-item.active::before{
+    content:"";
+    position:absolute; left:-12px; top:8px; bottom:8px; width:3px;
+    background:var(--gold); border-radius:2px;
+  }
+  .nav-icon{width:17px; text-align:center; font-size:15px;}
+
+  .sidebar-foot{
+    margin-top:auto; padding:16px 24px 0;
+    border-top:1px solid rgba(255,255,255,0.1);
+    display:flex; align-items:center; gap:10px;
+  }
+  .avatar{width:30px;height:30px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;}
+  .sidebar-foot .name{font-size:13px; font-weight:600;}
+  .sidebar-foot .plan{font-size:11px; color:#9FADC7;}
+
+  /* ---------- MAIN ---------- */
+  main{flex:1; padding:34px 44px 60px; overflow-y:auto; max-height:100vh;}
+  .topline{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:30px; flex-wrap:wrap; gap:16px;}
+  .eyebrow{font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--gold-deep); font-weight:600; margin-bottom:6px;}
+  .page-title{font-size:28px;}
+  .page-sub{color:var(--ink-soft); font-size:14px; margin-top:6px; max-width:520px;}
+
+  .btn{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px; font-weight:600;
+    padding:10px 18px;
+    border-radius:8px;
+    border:1px solid transparent;
+    cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{background:var(--ink); color:#fff;}
+  .btn-primary:hover{background:#233254;}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{background:var(--paper-card);}
+
+  .screen{display:none; animation:fade .25s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+
+  /* stat cards */
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:34px;}
+  .stat-card{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:14px;
+    padding:20px 22px; position:relative; overflow:hidden;
+  }
+  .stat-label{font-size:12px; color:var(--ink-soft); font-weight:500; margin-bottom:10px;}
+  .stat-value{font-family:'Fraunces',serif; font-size:32px; font-weight:600;}
+  .stat-delta{font-size:12px; color:var(--sage); margin-top:6px; font-weight:600;}
+
+  /* stamp badge - signature element */
+  .stamp{
+    display:inline-flex; align-items:center; gap:5px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px; font-weight:500;
+    text-transform:uppercase; letter-spacing:.06em;
+    padding:4px 9px 4px 7px;
+    border:1.4px solid currentColor;
+    border-radius:999px;
+    transform:rotate(-2deg);
+  }
+  .stamp.processed{color:var(--sage);}
+  .stamp.due{color:var(--danger);}
+  .stamp.summary{color:var(--gold-deep);}
+
+  .panel{background:var(--paper-card); border:1px solid var(--line); border-radius:14px; padding:22px 24px;}
+  .panel + .panel{margin-top:18px;}
+  .panel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;}
+  .panel-title{font-size:15.5px; font-weight:600; font-family:'Fraunces',serif;}
+  .link{color:var(--gold-deep); font-size:12.5px; font-weight:600; cursor:pointer; text-decoration:none;}
+
+  .activity-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:13px 0; border-bottom:1px solid var(--line);
+  }
+  .activity-row:last-child{border-bottom:none;}
+  .activity-left{display:flex; align-items:center; gap:12px;}
+  .file-ico{
+    width:34px; height:34px; border-radius:8px; background:var(--sage-soft); color:var(--sage);
+    display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; flex-shrink:0;
+  }
+  .activity-name{font-size:13.5px; font-weight:600;}
+  .activity-meta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
+
+  /* Documentos */
+  .toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px; flex-wrap:wrap;}
+  .filters{display:flex; gap:8px;}
+  .chip{
+    font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:999px;
+    border:1px solid var(--line); background:var(--paper-card); cursor:pointer; color:var(--ink-soft);
+  }
+  .chip.active{background:var(--ink); color:#fff; border-color:var(--ink);}
+
+  .dropzone{
+    border:1.6px dashed var(--gold);
+    border-radius:14px;
+    background:repeating-linear-gradient(135deg, rgba(200,155,60,0.05) 0 10px, transparent 10px 20px);
+    padding:34px 20px;
+    text-align:center;
+    margin-bottom:26px;
+  }
+  .dropzone-title{font-family:'Fraunces',serif; font-size:16px; font-weight:600; margin-bottom:4px;}
+  .dropzone-sub{font-size:12.5px; color:var(--ink-soft); margin-bottom:14px;}
+
+  .doc-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px;}
+  .doc-card{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:12px; padding:16px;
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .doc-top{display:flex; justify-content:space-between; align-items:flex-start;}
+  .doc-name{font-size:13.5px; font-weight:600; line-height:1.35;}
+  .doc-meta{font-size:11.5px; color:var(--ink-soft);}
+
+  /* Chat */
+  .chat-shell{display:grid; grid-template-columns:1fr 260px; gap:20px;}
+  .chat-window{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:14px;
+    display:flex; flex-direction:column; height:560px;
+  }
+  .chat-log{flex:1; overflow-y:auto; padding:24px; display:flex; flex-direction:column; gap:16px;}
+  .msg{max-width:74%; padding:12px 15px; border-radius:12px; font-size:13.8px; line-height:1.5;}
+  .msg.user{align-self:flex-end; background:var(--ink); color:#fff; border-bottom-right-radius:3px;}
+  .msg.ai{align-self:flex-start; background:var(--sage-soft); color:#274236; border-bottom-left-radius:3px;}
+  .msg.ai .sources{margin-top:9px; display:flex; gap:6px; flex-wrap:wrap;}
+  .src-tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:#fff; border:1px solid var(--line); padding:3px 8px; border-radius:6px; color:var(--ink-soft);}
+  .chat-input{display:flex; gap:10px; padding:16px; border-top:1px solid var(--line);}
+  .chat-input input{
+    flex:1; border:1px solid var(--line); border-radius:9px; padding:11px 14px; font-size:13.5px; font-family:'IBM Plex Sans',sans-serif; background:#fff;
+  }
+  .suggested{display:flex; flex-direction:column; gap:8px;}
+  .suggested-title{font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-soft); font-weight:600; margin-bottom:6px;}
+  .suggest-chip{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+    font-size:12.5px; cursor:pointer; line-height:1.4;
+  }
+  .suggest-chip:hover{border-color:var(--gold);}
+
+  /* Automações */
+  .auto-list{display:flex; flex-direction:column; gap:12px;}
+  .auto-row{
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+    background:var(--paper-card); border:1px solid var(--line); border-radius:12px; padding:18px 20px;
+  }
+  .auto-left{display:flex; gap:14px; align-items:flex-start;}
+  .auto-ico{width:38px;height:38px;border-radius:10px;background:var(--sage-soft);color:var(--sage);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .auto-name{font-size:14px; font-weight:600;}
+  .auto-desc{font-size:12.5px; color:var(--ink-soft); margin-top:3px; max-width:420px;}
+  .switch{
+    width:42px; height:24px; border-radius:999px; background:var(--sage); position:relative; cursor:pointer; flex-shrink:0;
+  }
+  .switch.off{background:#D8D5C8;}
+  .switch::after{
+    content:""; position:absolute; top:3px; left:21px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left .15s;
+  }
+  .switch.off::after{left:3px;}
+
+  /* Planos */
+  .billing-toggle{
+    display:inline-flex; background:var(--paper-card); border:1px solid var(--line); border-radius:999px; padding:4px; gap:2px; margin-bottom:32px;
+  }
+  .billing-opt{
+    padding:8px 18px; border-radius:999px; font-size:12.5px; font-weight:600; cursor:pointer; color:var(--ink-soft); border:none; background:none; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .billing-opt.active{background:var(--ink); color:#fff;}
+  .plans-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-items:stretch;}
+  .plan-card{
+    background:var(--paper-card); border:1px solid var(--line); border-radius:16px; padding:26px 24px;
+    display:flex; flex-direction:column; position:relative;
+  }
+  .plan-card.featured{
+    border-color:var(--gold); background:var(--ink); color:#fff;
+  }
+  .plan-card.featured .plan-desc,
+  .plan-card.featured .feat-row{color:#C9D1E4;}
+  .plan-badge{
+    position:absolute; top:-12px; right:22px;
+    background:var(--gold); color:var(--ink); font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.06em;
+    padding:4px 10px; border-radius:999px;
+  }
+  .plan-name{font-family:'Fraunces',serif; font-size:19px; font-weight:600; margin-bottom:6px;}
+  .plan-desc{font-size:12.5px; color:var(--ink-soft); margin-bottom:18px; min-height:32px;}
+  .plan-price{display:flex; align-items:baseline; gap:5px; margin-bottom:22px;}
+  .plan-price .amount{font-family:'Fraunces',serif; font-size:34px; font-weight:600;}
+  .plan-price .period{font-size:12.5px; color:inherit; opacity:.7;}
+  .plan-price .custom{font-family:'Fraunces',serif; font-size:24px; font-weight:600;}
+  .feat-list{list-style:none; display:flex; flex-direction:column; gap:11px; margin-bottom:26px; flex:1;}
+  .feat-row{display:flex; gap:9px; font-size:13px; align-items:flex-start; color:var(--ink-soft);}
+  .feat-row::before{content:"✓"; color:var(--sage); font-weight:700; flex-shrink:0;}
+  .plan-card.featured .feat-row::before{color:var(--gold);}
+  .plan-cta{width:100%; text-align:center; justify-content:center;}
+  .plan-card.featured .plan-cta{background:var(--gold); color:var(--ink);}
+  .plan-card.featured .plan-cta:hover{background:#DBAE55;}
+
+  .faq-panel{margin-top:34px;}
+  .faq-item{padding:14px 0; border-bottom:1px solid var(--line);}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{font-size:13.5px; font-weight:600; margin-bottom:5px;}
+  .faq-a{font-size:12.8px; color:var(--ink-soft); line-height:1.5;}
+
+  /* ======================================================
+     RESPONSIVO — mesma página, layout se adapta ao mobile
+     ====================================================== */
+  @media (max-width: 860px){
+    body{padding-bottom:76px;}
+    #app-content{flex-direction:column;}
+
+    /* sidebar vira barra inferior fixa */
+    .sidebar{
+      position:fixed; bottom:0; left:0; right:0; top:auto;
+      width:100%; height:auto;
+      flex-direction:row; justify-content:space-around; align-items:center;
+      padding:8px 4px calc(8px + env(safe-area-inset-bottom));
+      border-top:1px solid rgba(255,255,255,0.08);
+      z-index:30;
+    }
+    .brand, .sidebar-foot{display:none;}
+    nav{flex-direction:row; width:100%; padding:0; gap:0; justify-content:space-around;}
+    .nav-item{
+      flex-direction:column; gap:3px; align-items:center; justify-content:center;
+      font-size:10px; padding:6px 4px; flex:1; max-width:82px; text-align:center;
+    }
+    .nav-item.active::before{left:50%; top:auto; bottom:-6px; transform:translateX(-50%); width:18px; height:3px;}
+    .nav-icon{font-size:17px;}
+
+    main{padding:20px 16px 20px; max-height:none; overflow-y:visible;}
+    .topline{flex-direction:column; align-items:stretch;}
+    .topline .btn{width:100%;}
+    .page-title{font-size:22px;}
+
+    /* dashboard */
+    .stat-row{display:flex; overflow-x:auto; margin:0 -16px 26px; padding:2px 16px 6px; gap:12px;}
+    .stat-card{min-width:150px; flex-shrink:0;}
+
+    /* documentos */
+    .doc-grid{grid-template-columns:1fr;}
+    .toolbar{flex-direction:column; align-items:stretch;}
+    .filters{overflow-x:auto; padding-bottom:2px;}
+
+    /* chat */
+    .chat-shell{grid-template-columns:1fr;}
+    .chat-window{height:60vh; min-height:380px;}
+    .suggested{flex-direction:row; overflow-x:auto; gap:8px;}
+    .suggested-title{display:none;}
+    .suggest-chip{white-space:nowrap; flex-shrink:0;}
+
+    /* planos */
+    .plans-grid{grid-template-columns:1fr; gap:16px;}
+    .billing-toggle{width:100%;}
+    .billing-opt{flex:1; text-align:center;}
+  }
 </style>
 </head>
 <body>
 
-<div id="public">
-<nav class="nav">
-  <div class="logo">Tasklyn<span> AI</span></div>
-  <div class="navlinks">
-    <a href="#produto">Produto</a><a href="#precos">Preços</a>
-    <button class="btn secondary" onclick="openModal('login')">Entrar</button>
-    <button class="btn primary" onclick="openModal('signup')">Começar agora</button>
+<div id="auth-screen" style="display:flex; flex-direction:column; gap:12px; max-width:340px; margin:80px auto; padding:24px; border:1px solid #DEDCD2; border-radius:14px; font-family:'IBM Plex Sans',sans-serif;">
+  <h2 style="font-family:'Fraunces',serif;">Entrar no Tasklyn</h2>
+  <input id="auth-email" type="email" placeholder="E-mail" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <input id="auth-password" type="password" placeholder="Senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Entrar</button>
+  <button onclick="handleSignup()" style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600;">Criar conta</button>
+  <p id="auth-message" style="font-size:12px; color:#B4553F;"></p>
+</div>
+
+<div id="app-content">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-mark">T</div>
+    <div>
+      <div class="brand-name">Tasklyn</div>
+      <div class="brand-sub">AI para empresas</div>
+    </div>
   </div>
-</nav>
+  <nav>
+    <button class="nav-item active" data-screen="dashboard"><span class="nav-icon">◧</span> Dashboard</button>
+    <button class="nav-item" data-screen="documentos"><span class="nav-icon">▤</span> Documentos</button>
+    <button class="nav-item" data-screen="chat"><span class="nav-icon">◐</span> Chat com IA</button>
+    <button class="nav-item" data-screen="automacoes"><span class="nav-icon">◎</span> Automações</button>
+    <button class="nav-item" data-screen="planos"><span class="nav-icon">◈</span> Planos</button>
+  </nav>
+  <div class="sidebar-foot" id="sidebar-foot">
+    <div class="avatar" id="user-avatar">?</div>
+    <div style="min-width:0; flex:1;">
+      <div class="name" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
+      <div class="plan">Plano Pro</div>
+    </div>
+    <button id="logout-btn" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
+  </div>
+</aside>
 
-<header class="hero">
-<span class="badge">Produtividade empresarial com IA</span>
-<h1>Menos tarefas repetitivas. Mais tempo para o que importa.</h1>
-<p>O Tasklyn AI ajuda empresas a organizar documentos, encontrar informações e automatizar tarefas administrativas em um só lugar.</p>
-<div class="actions"><button class="btn primary" onclick="openModal('signup')">Escolher plano</button><button class="btn secondary" onclick="document.getElementById('produto').scrollIntoView()">Ver demonstração</button></div>
-</header>
+<main>
 
-<section class="demo" id="produto">
-<div class="window"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
-<div class="mock"><aside class="side"><strong>Tasklyn AI</strong><p>📊 Dashboard</p><p>📁 Documentos</p><p>🤖 Assistente IA</p><p>⚡ Automações</p><p>⚙️ Configurações</p></aside>
-<main class="main"><h2>Olá, sua empresa 👋</h2><p style="color:#64748b">Uma prévia do seu painel.</p>
-<div class="stats"><div class="stat">📄 Documentos<b>245</b><small>organizados</small></div><div class="stat">⚡ Tempo economizado<b>32h</b><small>este mês</small></div><div class="stat">🤖 Assistente<b>Online</b><small>pronto para ajudar</small></div></div>
-<div class="stat" style="margin-top:14px"><b style="font-size:18px">Pergunte à IA</b><p style="color:#64748b">“Quando vence o contrato?”</p><button class="btn primary" onclick="document.getElementById('demoAnswer').classList.remove('hidden')">Testar</button><p id="demoAnswer" class="hidden" style="color:#166534;background:#dcfce7;padding:10px;border-radius:8px">Demonstração: a IA consulta as informações disponíveis no documento.</p></div>
-</main></div></div></section>
+  <!-- DASHBOARD -->
+  <section class="screen active" id="dashboard">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">Visão geral</div>
+        <h1 class="page-title" id="dashboard-greeting">Bom dia.</h1>
+        <p class="page-sub">Aqui está o que a Tasklyn organizou e economizou para o seu time esta semana.</p>
+      </div>
+      <button class="btn btn-primary" onclick="goToDocumentosAndUpload()">＋ Novo documento</button>
+    </div>
 
-<section class="section"><h2>Feito para economizar tempo</h2><p class="lead">Centralize documentos e transforme tarefas repetitivas em fluxos mais rápidos.</p>
-<div class="features"><div class="feature"><h3>📂 Documentos inteligentes</h3><p>Organize arquivos e encontre informações importantes rapidamente.</p></div><div class="feature"><h3>🤖 Assistente de IA</h3><p>Faça perguntas em linguagem natural sobre seus documentos.</p></div><div class="feature"><h3>⚡ Automações</h3><p>Reduza tarefas repetitivas e acompanhe informações importantes.</p></div></div></section>
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-label">Documentos analisados</div>
+        <div class="stat-value" id="stat-doc-count">—</div>
+        <div class="stat-delta" id="stat-doc-delta"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Documentos processados</div>
+        <div class="stat-value" id="stat-processed-count">—</div>
+        <div class="stat-delta">pela IA</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Vencimentos próximos</div>
+        <div class="stat-value" id="stat-due-count">—</div>
+        <div class="stat-delta" style="color:var(--gold-deep)">próximos 7 dias</div>
+      </div>
+    </div>
 
-<section class="section" id="precos"><h2>Planos simples</h2><p class="lead">Comece pequeno e evolua conforme sua empresa crescer.</p>
-<div class="pricing"><div class="price"><h3>Starter</h3><div class="value">R$49/mês</div><ul><li>1 usuário</li><li>Até 500 documentos</li><li>Assistente IA</li></ul><button class="btn secondary" onclick="openModal('signup')">Começar</button></div>
-<div class="price popular"><h3>Pro</h3><div class="value">R$149/mês</div><ul><li>Mais usuários</li><li>Mais documentos</li><li>Automações</li></ul><button class="btn primary" onclick="openModal('signup')">Começar</button></div>
-<div class="price"><h3>Enterprise</h3><div class="value">Personalizado</div><ul><li>Grandes equipes</li><li>Integrações</li><li>Suporte especializado</li></ul><button class="btn secondary" onclick="alert('Contato comercial — demonstração do protótipo.')">Falar com vendas</button></div></div></section>
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title">Atividade recente</div>
+        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">Ver tudo →</a>
+      </div>
+      <div id="dashboard-activity">
+        <p style="color:var(--ink-soft); font-size:13px;">Carregando…</p>
+      </div>
+    </div>
+  </section>
 
-<section class="cta"><h2>Pronto para recuperar tempo?</h2><p>Conheça o Tasklyn AI.</p><button class="btn primary" onclick="openModal('signup')">Criar minha conta</button></section>
-<footer>Tasklyn AI — produtividade inteligente para empresas.</footer>
+  <!-- DOCUMENTOS -->
+  <section class="screen" id="documentos">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">Gestão de documentos</div>
+        <h1 class="page-title">Documentos</h1>
+        <p class="page-sub">Envie qualquer arquivo — a Tasklyn organiza, nomeia e indexa automaticamente.</p>
+      </div>
+    </div>
+
+    <div class="dropzone">
+      <div class="dropzone-title">Arraste arquivos aqui</div>
+      <div class="dropzone-sub">PDF, Word, Excel ou imagens · a IA identifica o tipo e organiza sozinha</div>
+      <input type="file" id="file-input" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*">
+      <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">Selecionar arquivos</button>
+      <p id="upload-status" style="font-size:12px; color:var(--ink-soft); margin-top:10px;"></p>
+    </div>
+
+    <div class="toolbar">
+      <div class="filters">
+        <button class="chip active">Todos</button>
+      </div>
+    </div>
+
+    <div class="doc-grid" id="doc-grid">
+      <p style="color:var(--ink-soft); font-size:13px;">Carregando documentos…</p>
+    </div>
+  </section>
+
+  <!-- CHAT -->
+  <section class="screen" id="chat">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">Chat com IA</div>
+        <h1 class="page-title">Pergunte à Tasklyn</h1>
+        <p class="page-sub">As respostas vêm sempre dos documentos da sua empresa, com a fonte indicada.</p>
+      </div>
+    </div>
+
+    <div class="chat-shell">
+      <div class="chat-window">
+        <div class="chat-log" id="chat-log">
+          <div class="msg ai">Olá! Sou a IA da Tasklyn. Envie seus documentos na aba Documentos e depois me pergunte algo sobre eles aqui.</div>
+        </div>
+        <div class="chat-input">
+          <input type="text" id="chat-input-field" placeholder="Pergunte algo sobre seus documentos…">
+          <button class="btn btn-primary" id="chat-send-btn">Enviar</button>
+        </div>
+      </div>
+
+      <div class="suggested">
+        <div class="suggested-title">Perguntas rápidas</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Quais documentos vencem em breve?</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Resuma meus documentos mais recentes.</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Quantos documentos eu já enviei?</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTOMAÇÕES -->
+  <section class="screen" id="automacoes">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">Automações</div>
+        <h1 class="page-title">Automações</h1>
+        <p class="page-sub">Tarefas que a Tasklyn executa sozinha, sempre que um documento entra no sistema.</p>
+      </div>
+    </div>
+
+    <div class="auto-list">
+      <div class="auto-row">
+        <div class="auto-left">
+          <div class="auto-ico">◐</div>
+          <div>
+            <div class="auto-name">Resumir documentos novos</div>
+            <div class="auto-desc">Todo arquivo enviado é analisado pela IA automaticamente (resumo, categoria e vencimento).</div>
+          </div>
+        </div>
+        <div class="switch" data-key="resumir"></div>
+      </div>
+
+      <div class="auto-row">
+        <div class="auto-left">
+          <div class="auto-ico">◷</div>
+          <div>
+            <div class="auto-name">Avisar sobre vencimentos</div>
+            <div class="auto-desc">Mostra no Dashboard os documentos com vencimento nos próximos 7 dias.</div>
+          </div>
+        </div>
+        <div class="switch" data-key="vencimentos"></div>
+      </div>
+
+      <div class="auto-row">
+        <div class="auto-left">
+          <div class="auto-ico">▤</div>
+          <div>
+            <div class="auto-name">Organizar arquivos recebidos</div>
+            <div class="auto-desc">Classifica cada documento em Contratos, Financeiro, Clientes ou Outros com base no conteúdo.</div>
+          </div>
+        </div>
+        <div class="switch" data-key="organizar"></div>
+      </div>
+
+      <div class="auto-row" style="opacity:.55;">
+        <div class="auto-left">
+          <div class="auto-ico">✉</div>
+          <div>
+            <div class="auto-name">Rascunhar e-mails de resposta <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-desc">Gera um rascunho de e-mail baseado no documento recebido, para revisão.</div>
+          </div>
+        </div>
+        <div class="switch off" style="pointer-events:none;"></div>
+      </div>
+
+      <div class="auto-row" style="opacity:.55;">
+        <div class="auto-left">
+          <div class="auto-ico">◉</div>
+          <div>
+            <div class="auto-name">Relatório semanal de atividade <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-desc">Envia um resumo do que foi processado e do tempo economizado toda sexta-feira.</div>
+          </div>
+        </div>
+        <div class="switch off" style="pointer-events:none;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section class="screen" id="planos">
+    <div class="topline">
+      <div>
+        <div class="eyebrow">Planos e preços</div>
+        <h1 class="page-title">Escolha o plano da sua equipe</h1>
+        <p class="page-sub">Comece pequeno e cresça — todos os planos incluem organização automática de documentos.</p>
+      </div>
+    </div>
+
+    <div class="billing-toggle">
+      <button class="billing-opt active" data-period="monthly">Mensal</button>
+      <button class="billing-opt" data-period="yearly">Anual · 2 meses grátis</button>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-desc">Para times pequenos organizarem os primeiros documentos.</div>
+        <div class="plan-price">
+          <span class="amount" data-monthly="R$49" data-yearly="R$490">R$49</span>
+          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+        </div>
+        <ul class="feat-list">
+          <li class="feat-row">Até 300 documentos/mês</li>
+          <li class="feat-row">2 usuários</li>
+          <li class="feat-row">Chat com IA ilimitado</li>
+          <li class="feat-row">1 automação ativa</li>
+          <li class="feat-row">Suporte por e-mail</li>
+        </ul>
+        <a class="btn btn-ghost plan-cta" data-link-monthly="https://buy.stripe.com/fZucN5ebP5xk6rh5FeaMU02" data-link-yearly="https://buy.stripe.com/6oU9ATd7L5xk5nd4BaaMU05" href="#" target="_blank">Começar agora</a>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">Mais escolhido</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-desc">Para escritórios com múltiplos clientes e vencimentos recorrentes.</div>
+        <div class="plan-price">
+          <span class="amount" data-monthly="R$149" data-yearly="R$1.490">R$149</span>
+          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+        </div>
+        <ul class="feat-list">
+          <li class="feat-row">Até 2.000 documentos/mês</li>
+          <li class="feat-row">10 usuários</li>
+          <li class="feat-row">Chat com IA ilimitado</li>
+          <li class="feat-row">Automações ilimitadas</li>
+          <li class="feat-row">Alertas de vencimento</li>
+          <li class="feat-row">Suporte prioritário</li>
+        </ul>
+        <a class="btn plan-cta" data-link-monthly="https://buy.stripe.com/4gMeVdebP4tgaHxebKaMU04" data-link-yearly="https://buy.stripe.com/dRm5kDaZDcZM8zp4BaaMU03" href="#" target="_blank">Assinar Pro</a>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div class="plan-desc">Para empresas maiores com integrações e volume personalizados.</div>
+        <div class="plan-price"><span class="custom">Sob consulta</span></div>
+        <ul class="feat-list">
+          <li class="feat-row">Documentos ilimitados</li>
+          <li class="feat-row">Usuários ilimitados</li>
+          <li class="feat-row">Integrações dedicadas</li>
+          <li class="feat-row">Automações personalizadas</li>
+          <li class="feat-row">Gerente de conta dedicado</li>
+        </ul>
+        <a class="btn btn-ghost plan-cta" href="mailto:suporte.tasklyn@gmail.com?subject=Interesse%20no%20plano%20Enterprise%20da%20Tasklyn&body=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20Enterprise%20da%20Tasklyn%20para%20a%20minha%20empresa.">Falar com vendas</a>
+      </div>
+    </div>
+
+    <div class="panel faq-panel">
+      <div class="panel-title" style="margin-bottom:14px;">Perguntas frequentes</div>
+      <div class="faq-item">
+        <div class="faq-q">Posso trocar de plano depois?</div>
+        <div class="faq-a">Sim, o upgrade ou downgrade pode ser feito a qualquer momento, com cobrança proporcional.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Os documentos ficam seguros?</div>
+        <div class="faq-a">Sim, todos os arquivos são armazenados de forma criptografada e acessíveis apenas pela sua equipe.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
 </div>
 
-<!-- DASHBOARD APÓS LOGIN -->
-<div id="dashboard" class="hidden">
-<nav class="dashnav"><div class="logo">Tasklyn<span> AI</span></div><div><span id="userName">Usuário</span> <button class="btn secondary" onclick="logout()">Sair</button></div></nav>
-<div class="dash">
-<aside class="dashside"><button class="active">📊 Dashboard</button><button>📁 Documentos</button><button>🤖 Assistente IA</button><button>⚡ Automações</button><button onclick="showPlans(currentUser)">💳 Plano</button><button>⚙️ Configurações</button></aside>
-<main class="dashmain">
-<h1>Olá, <span id="dashName">usuário</span>! 👋</h1><p style="color:#64748b">Bem-vindo ao seu painel Tasklyn.</p>
-<div class="dashstats"><div class="stat">Documentos<b id="docCount">0</b></div><div class="stat">Tempo economizado<b>0h</b></div><div class="stat">Automações<b>0</b></div><div class="stat">Plano<b id="planName">—</b></div></div>
-<div class="panel"><h3>📁 Seus documentos</h3><div id="docs"><div class="doc"><span>📄 Nenhum documento enviado ainda</span><span class="tag">Pronto</span></div></div><button class="btn primary" onclick="addDemoDoc()">Adicionar documento de demonstração</button></div>
-<div class="panel"><h3>🤖 Assistente IA</h3><p style="color:#64748b">Pergunte sobre seus documentos.</p><div class="assistant"><input id="question" placeholder="Ex.: Quando vence meu contrato?"><button class="btn primary" onclick="askAI()">Perguntar</button></div><div id="aiResult" class="msg success hidden"></div></div>
-</main></div>
-</div>
-
-<div class="modal" id="modal"><div class="form"><button class="close" onclick="closeModal()">×</button><div id="formContent"></div></div></div>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 
 <script>
-let currentUser=null;
+  async function handleLogin() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const msg = document.getElementById('auth-message');
+    try {
+      await signIn(email, password);
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+      const user = await getCurrentUser();
+      initApp(user);
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
 
-function openModal(type){
- const c=document.getElementById('formContent');
- if(type==='signup'){
-  c.innerHTML=`<h2>Criar sua conta</h2><p style="color:#64748b">Crie sua conta e escolha um plano para liberar o Dashboard.</p>
-  <label>Nome</label><input id="signupName" placeholder="Seu nome" required>
-  <label>Empresa</label><input id="signupCompany" placeholder="Nome da empresa" required>
-  <label>E-mail</label><input id="signupEmail" type="email" placeholder="voce@empresa.com" required>
-  <label>Senha</label><input id="signupPass" type="password" minlength="8" placeholder="Mínimo de 8 caracteres" required>
-  <button class="btn primary" onclick="createAccount()">Continuar para escolher plano</button>
-  <div id="formMsg"></div><p style="font-size:12px;color:#94a3b8">MVP: após o cadastro, escolha um plano. O Dashboard só deve ser liberado após a confirmação do pagamento no sistema de produção.</p>`;
- }else{
-  c.innerHTML=`<h2>Entrar no Tasklyn</h2><p style="color:#64748b">Acesse seu Dashboard após a assinatura.</p>
-  <label>E-mail</label><input id="loginEmail" type="email" placeholder="voce@empresa.com">
-  <label>Senha</label><input id="loginPass" type="password" placeholder="Sua senha">
-  <button class="btn primary" onclick="login()">Entrar</button>
-  <div id="formMsg"></div><p style="font-size:12px;color:#94a3b8">MVP: a conta só recebe acesso ao Dashboard após a assinatura ser confirmada.</p>`;
- }
- document.getElementById('modal').classList.add('open');
-}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-function msg(t,good=true){const x=document.getElementById('formMsg');x.className='msg '+(good?'success':'error');x.textContent=t;x.style.display='block'}
-function createAccount(){
- const name=document.getElementById('signupName').value.trim(), company=document.getElementById('signupCompany').value.trim(), email=document.getElementById('signupEmail').value.trim(), pass=document.getElementById('signupPass').value;
- if(!name||!company||!email||pass.length<8){msg('Preencha todos os campos e use uma senha de pelo menos 8 caracteres.',false);return}
- const user={name,company,email,pass,subscription:'pending'};
- localStorage.setItem('tasklynUser',JSON.stringify(user));
- showPlans(user);
-}
-function login(){
- const email=document.getElementById('loginEmail').value.trim(), pass=document.getElementById('loginPass').value;
- const user=JSON.parse(localStorage.getItem('tasklynUser')||'null');
- if(!user){msg('Nenhuma conta foi criada neste navegador.',false);return}
- if(user.email!==email||user.pass!==pass){msg('E-mail ou senha incorretos.',false);return}
- if(user.subscription!=='active'){showPlans(user);return}
- enterDashboard(user);
-}
-function showPlans(user){
- const c=document.getElementById('formContent');
- c.innerHTML=`<h2>Escolha seu plano</h2>
- <p style="color:#64748b">O Dashboard e as funções do Tasklyn ficam disponíveis somente após a confirmação da assinatura.</p>
- <div style="display:grid;gap:10px;margin-top:18px">
- <button class="btn secondary" onclick="goToCheckout('Starter mensal','https://buy.stripe.com/fZucN5ebP5xk6rh5FeaMU02')">Starter — mensal</button>
- <button class="btn secondary" onclick="goToCheckout('Starter anual','https://buy.stripe.com/6oU9ATd7L5xk5nd4BaaMU05')">Starter — anual</button>
- <button class="btn primary" onclick="goToCheckout('Pro mensal','https://buy.stripe.com/4gMeVdebP4tgaHxebKaMU04')">Pro — mensal</button>
- <button class="btn primary" onclick="goToCheckout('Pro anual','https://buy.stripe.com/dRm5kDaZDcZM8zp4BaaMU03')">Pro — anual</button>
- <button class="btn secondary" onclick="alert('Enterprise: contato comercial para definir o plano e o checkout.')">Enterprise — Personalizado</button>
- </div>
- <p style="font-size:12px;color:#94a3b8;margin-top:15px">Você será direcionado ao checkout seguro da Stripe. No ambiente real, o acesso ao Dashboard deve ser ativado pelo backend após a confirmação do pagamento.</p>`;
- document.getElementById('modal').classList.add('open');
-}
-function goToCheckout(plan,url){
- const user=JSON.parse(localStorage.getItem('tasklynUser')||'null');
- if(user){ user.selectedPlan=plan; localStorage.setItem('tasklynUser',JSON.stringify(user)); }
- window.location.href=url;
-}
-function activateDemoPlan(plan){
- const user=JSON.parse(localStorage.getItem('tasklynUser')||'null');
- if(!user)return;
- user.subscription='active'; user.plan=plan;
- localStorage.setItem('tasklynUser',JSON.stringify(user));
- enterDashboard(user);
-}
-function enterDashboard(user){
- currentUser=user; closeModal();
- document.getElementById('public').classList.add('hidden');
- document.getElementById('dashboard').classList.remove('hidden');
- document.getElementById('userName').textContent=user.name;
- document.getElementById('dashName').textContent=user.name;
- document.getElementById('planName').textContent=user.plan || 'Ativo';
-}
-function logout(){
- currentUser=null;document.getElementById('dashboard').classList.add('hidden');document.getElementById('public').classList.remove('hidden');
-}
-function addDemoDoc(){
- const docs=document.getElementById('docs');docs.innerHTML='<div class="doc"><span>📄 Contrato de prestação de serviços.pdf</span><span class="tag">Processado</span></div>';document.getElementById('docCount').textContent='1';
-}
-function askAI(){
- const q=document.getElementById('question').value.trim();if(!q)return;
- const r=document.getElementById('aiResult');r.textContent='Demonstração: a IA analisaria os documentos da conta e responderia com base nas informações encontradas. Para respostas reais, conecte este painel ao backend/IA do Tasklyn.';r.classList.remove('hidden');
-}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+  async function handleSignup() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const msg = document.getElementById('auth-message');
+    try {
+      await signUp(email, password);
+      msg.style.color = '#4F7863';
+      msg.textContent = 'Conta criada! Verifique seu e-mail para confirmar.';
+    } catch (err) {
+      msg.textContent = 'Erro: ' + err.message;
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('app-content').style.display = 'none';
+    const user = await getCurrentUser();
+    if (user) {
+      document.getElementById('auth-screen').style.display = 'none';
+      document.getElementById('app-content').style.display = 'flex';
+      initApp(user);
+    }
+  });
+
+  // ---------------- USUÁRIO / LOGOUT ----------------
+
+  function initApp(user) {
+    document.getElementById('user-email').textContent = user.email;
+    document.getElementById('user-avatar').textContent = user.email.slice(0, 2).toUpperCase();
+    const firstName = user.email.split('@')[0];
+    document.getElementById('dashboard-greeting').textContent = `Bom dia, ${firstName}.`;
+    refreshDocuments();
+    loadAutomations();
+  }
+
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await signOut();
+    window.location.reload();
+  });
+
+  // ---------------- UPLOAD DE DOCUMENTOS ----------------
+
+  document.getElementById('file-input').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+    const statusEl = document.getElementById('upload-status');
+    let hadError = false;
+
+    for (const file of files) {
+      statusEl.textContent = `Enviando ${file.name}…`;
+      try {
+        const doc = await uploadDocument(file);
+        refreshDocuments();
+
+        const settings = await getAutomations().catch(() => ({}));
+        const autoSummarize = settings.hasOwnProperty('resumir') ? settings.resumir : true;
+
+        if (autoSummarize) {
+          statusEl.textContent = `Analisando ${file.name} com IA…`;
+          try {
+            const procResponse = await fetch('/api/process-document', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
+            });
+            if (!procResponse.ok) {
+              const rawText = await procResponse.text();
+              let detail = rawText;
+              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
+              statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
+              hadError = true;
+            }
+          } catch (procErr) {
+            statusEl.textContent = `Erro ao analisar ${file.name}: ${procErr.message}`;
+            hadError = true;
+          }
+        }
+      } catch (err) {
+        statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
+        return;
+      }
+    }
+    if (!hadError) statusEl.textContent = 'Envio concluído.';
+    e.target.value = '';
+    refreshDocuments();
+  });
+
+  function fileIcon(fileType) {
+    if (!fileType) return 'DOC';
+    if (fileType.includes('pdf')) return 'PDF';
+    if (fileType.includes('sheet') || fileType.includes('excel')) return 'XLS';
+    if (fileType.includes('word')) return 'DOC';
+    if (fileType.includes('image')) return 'IMG';
+    return 'DOC';
+  }
+
+  function timeAgo(dateStr) {
+    const diffMs = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return 'agora mesmo';
+    if (mins < 60) return `há ${mins} min`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `há ${hours}h`;
+    return `há ${Math.floor(hours / 24)} dias`;
+  }
+
+  async function refreshDocuments() {
+    const grid = document.getElementById('doc-grid');
+    const activityBox = document.getElementById('dashboard-activity');
+    try {
+      const docs = await listDocuments();
+      window._tasklynDocs = docs || [];
+
+      // Estatísticas
+      const total = docs ? docs.length : 0;
+      const processed = docs ? docs.filter(d => d.status === 'processed').length : 0;
+      const due = docs ? docs.filter(d => d.due_date && (new Date(d.due_date) - new Date()) / 86400000 <= 7 && (new Date(d.due_date) - new Date()) >= 0).length : 0;
+      document.getElementById('stat-doc-count').textContent = total;
+      document.getElementById('stat-processed-count').textContent = processed;
+      document.getElementById('stat-due-count').textContent = due;
+      document.getElementById('stat-doc-delta').textContent = total > 0 ? `${total} no total` : 'nenhum ainda';
+
+      if (!docs || docs.length === 0) {
+        grid.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhum documento enviado ainda. Use "Selecionar arquivos" acima.</p>';
+        activityBox.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhuma atividade ainda. Envie seu primeiro documento na aba Documentos.</p>';
+        return;
+      }
+
+      grid.innerHTML = docs.map(doc => {
+        const isDue = doc.due_date && (new Date(doc.due_date) - new Date()) >= 0 && (new Date(doc.due_date) - new Date()) / 86400000 <= 30;
+        const stampClass = isDue ? 'due' : (doc.status === 'processed' ? 'processed' : 'summary');
+        const stampText = isDue ? `vence ${doc.due_date.split('-').reverse().join('/')}` : (doc.status === 'processed' ? 'ok' : 'processando');
+        return `
+        <div class="doc-card">
+          <div class="doc-top">
+            <div class="file-ico">${fileIcon(doc.file_type)}</div>
+            <span class="stamp ${stampClass}">${stampText}</span>
+          </div>
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
+          ${doc.summary ? `<div class="doc-meta" style="color:var(--ink); line-height:1.4;">${doc.summary}</div>` : ''}
+        </div>
+      `;
+      }).join('');
+
+      activityBox.innerHTML = docs.slice(0, 5).map(doc => `
+        <div class="activity-row">
+          <div class="activity-left">
+            <div class="file-ico">${fileIcon(doc.file_type)}</div>
+            <div>
+              <div class="activity-name">${doc.name}</div>
+              <div class="activity-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
+            </div>
+          </div>
+          <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'processado' : 'processando'}</span>
+        </div>
+      `).join('');
+    } catch (err) {
+      grid.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erro ao carregar documentos: ${err.message}</p>`;
+      activityBox.innerHTML = '';
+    }
+  }
+
+  // ---------------- CHAT COM IA ----------------
+
+  function appendMessage(text, role) {
+    const log = document.getElementById('chat-log');
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+    return div;
+  }
+
+  async function sendChatMessage(text) {
+    if (!text.trim()) return;
+    appendMessage(text, 'user');
+    const thinkingEl = appendMessage('Pensando…', 'ai');
+
+    try {
+      const docs = window._tasklynDocs || [];
+      const docContext = docs.map(d => `- ${d.name} (categoria: ${d.category}, status: ${d.status}${d.due_date ? ', vence em ' + d.due_date : ''})`).join('\n');
+
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: text,
+          documents: docContext || 'Nenhum documento enviado ainda.'
+        })
+      });
+
+      if (!response.ok) {
+        const rawText = await response.text();
+        let detail = rawText;
+        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* mantém texto puro */ }
+        throw new Error(`(${response.status}) ${detail}`);
+      }
+      const data = await response.json();
+      thinkingEl.textContent = data.reply;
+    } catch (err) {
+      thinkingEl.textContent = 'Erro ao falar com a IA: ' + err.message;
+    }
+  }
+
+  document.getElementById('chat-send-btn').addEventListener('click', () => {
+    const input = document.getElementById('chat-input-field');
+    sendChatMessage(input.value);
+    input.value = '';
+  });
+
+  document.getElementById('chat-input-field').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      sendChatMessage(e.target.value);
+      e.target.value = '';
+    }
+  });
+
+  function sendSuggested(el) {
+    document.querySelector('[data-screen="chat"]').click();
+    sendChatMessage(el.textContent);
+  }
+
+  function goToDocumentosAndUpload() {
+    // troca de aba diretamente via classes, sem disparar um segundo clique
+    // (dois .click() em sequência podem perder a permissão do Safari pra abrir o seletor de arquivo)
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelector('[data-screen="documentos"]').classList.add('active');
+    document.getElementById('documentos').classList.add('active');
+    document.getElementById('file-input').click();
+  }
 </script>
+
+<script>
+  document.querySelectorAll('.nav-item').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.screen).classList.add('active');
+    });
+  });
+  document.querySelectorAll('.switch[data-key]').forEach(function(sw){
+    sw.addEventListener('click', async function(){
+      const wasOff = sw.classList.contains('off');
+      sw.classList.toggle('off');
+      try {
+        await setAutomation(sw.dataset.key, wasOff); // wasOff=true significa que agora está ligando
+      } catch (err) {
+        sw.classList.toggle('off'); // desfaz a mudança visual se salvar falhar
+        alert('Não foi possível salvar essa automação agora: ' + err.message);
+      }
+    });
+  });
+
+  async function loadAutomations() {
+    try {
+      const settings = await getAutomations();
+      document.querySelectorAll('.switch[data-key]').forEach(function(sw){
+        const key = sw.dataset.key;
+        const enabled = settings.hasOwnProperty(key) ? settings[key] : true; // padrão: ligado
+        sw.classList.toggle('off', !enabled);
+      });
+    } catch (err) {
+      console.error('Falha ao carregar automações:', err);
+    }
+  }
+  document.querySelectorAll('.chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+
+  // ---------------- TOGGLE MENSAL / ANUAL ----------------
+  function applyBillingPeriod(period) {
+    document.querySelectorAll('.plan-price .amount, .plan-price .period').forEach(function(el){
+      const value = period === 'yearly' ? el.dataset.yearly : el.dataset.monthly;
+      if (value) el.textContent = value;
+    });
+    document.querySelectorAll('.plan-cta[data-link-monthly]').forEach(function(btn){
+      const link = period === 'yearly' ? btn.dataset.linkYearly : btn.dataset.linkMonthly;
+      if (link) btn.href = link;
+    });
+  }
+  applyBillingPeriod('monthly'); // preenche os links assim que a página carrega
+
+  document.querySelectorAll('.billing-opt').forEach(function(opt){
+    opt.addEventListener('click', function(){
+      document.querySelectorAll('.billing-opt').forEach(o => o.classList.remove('active'));
+      opt.classList.add('active');
+      applyBillingPeriod(opt.dataset.period);
+    });
+  });
+</script>
+
 </body>
 </html>
