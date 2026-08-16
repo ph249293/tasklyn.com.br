@@ -482,7 +482,6 @@
         <h1 class="page-title">Automações</h1>
         <p class="page-sub">Tarefas que a Tasklyn executa sozinha, sempre que um documento entra no sistema.</p>
       </div>
-      <button class="btn btn-primary">＋ Nova automação</button>
     </div>
 
     <div class="auto-list">
@@ -491,10 +490,10 @@
           <div class="auto-ico">◐</div>
           <div>
             <div class="auto-name">Resumir documentos novos</div>
-            <div class="auto-desc">Todo arquivo enviado recebe um resumo automático em até 1 minuto.</div>
+            <div class="auto-desc">Todo arquivo enviado é analisado pela IA automaticamente (resumo, categoria e vencimento).</div>
           </div>
         </div>
-        <div class="switch"></div>
+        <div class="switch" data-key="resumir"></div>
       </div>
 
       <div class="auto-row">
@@ -502,10 +501,10 @@
           <div class="auto-ico">◷</div>
           <div>
             <div class="auto-name">Avisar sobre vencimentos</div>
-            <div class="auto-desc">Alerta automático 7 dias antes do vencimento de contratos identificados.</div>
+            <div class="auto-desc">Mostra no Dashboard os documentos com vencimento nos próximos 7 dias.</div>
           </div>
         </div>
-        <div class="switch"></div>
+        <div class="switch" data-key="vencimentos"></div>
       </div>
 
       <div class="auto-row">
@@ -513,32 +512,32 @@
           <div class="auto-ico">▤</div>
           <div>
             <div class="auto-name">Organizar arquivos recebidos</div>
-            <div class="auto-desc">Classifica e move cada documento para a pasta correta com base no conteúdo.</div>
+            <div class="auto-desc">Classifica cada documento em Contratos, Financeiro, Clientes ou Outros com base no conteúdo.</div>
           </div>
         </div>
-        <div class="switch"></div>
+        <div class="switch" data-key="organizar"></div>
       </div>
 
-      <div class="auto-row">
+      <div class="auto-row" style="opacity:.55;">
         <div class="auto-left">
           <div class="auto-ico">✉</div>
           <div>
-            <div class="auto-name">Rascunhar e-mails de resposta</div>
+            <div class="auto-name">Rascunhar e-mails de resposta <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
             <div class="auto-desc">Gera um rascunho de e-mail baseado no documento recebido, para revisão.</div>
           </div>
         </div>
-        <div class="switch off"></div>
+        <div class="switch off" style="pointer-events:none;"></div>
       </div>
 
-      <div class="auto-row">
+      <div class="auto-row" style="opacity:.55;">
         <div class="auto-left">
           <div class="auto-ico">◉</div>
           <div>
-            <div class="auto-name">Relatório semanal de atividade</div>
+            <div class="auto-name">Relatório semanal de atividade <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
             <div class="auto-desc">Envia um resumo do que foi processado e do tempo economizado toda sexta-feira.</div>
           </div>
         </div>
-        <div class="switch"></div>
+        <div class="switch off" style="pointer-events:none;"></div>
       </div>
     </div>
   </section>
@@ -677,6 +676,7 @@
     const firstName = user.email.split('@')[0];
     document.getElementById('dashboard-greeting').textContent = `Bom dia, ${firstName}.`;
     refreshDocuments();
+    loadAutomations();
   }
 
   document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -696,24 +696,30 @@
       statusEl.textContent = `Enviando ${file.name}…`;
       try {
         const doc = await uploadDocument(file);
-        statusEl.textContent = `Analisando ${file.name} com IA…`;
         refreshDocuments();
-        try {
-          const procResponse = await fetch('/api/process-document', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
-          });
-          if (!procResponse.ok) {
-            const rawText = await procResponse.text();
-            let detail = rawText;
-            try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
-            statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
+
+        const settings = await getAutomations().catch(() => ({}));
+        const autoSummarize = settings.hasOwnProperty('resumir') ? settings.resumir : true;
+
+        if (autoSummarize) {
+          statusEl.textContent = `Analisando ${file.name} com IA…`;
+          try {
+            const procResponse = await fetch('/api/process-document', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ documentId: doc.id, filePath: doc.file_path, fileType: doc.file_type })
+            });
+            if (!procResponse.ok) {
+              const rawText = await procResponse.text();
+              let detail = rawText;
+              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
+              statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
+              hadError = true;
+            }
+          } catch (procErr) {
+            statusEl.textContent = `Erro ao analisar ${file.name}: ${procErr.message}`;
             hadError = true;
           }
-        } catch (procErr) {
-          statusEl.textContent = `Erro ao analisar ${file.name}: ${procErr.message}`;
-          hadError = true;
         }
       } catch (err) {
         statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
@@ -882,9 +888,31 @@
       document.getElementById(btn.dataset.screen).classList.add('active');
     });
   });
-  document.querySelectorAll('.switch').forEach(function(sw){
-    sw.addEventListener('click', function(){ sw.classList.toggle('off'); });
+  document.querySelectorAll('.switch[data-key]').forEach(function(sw){
+    sw.addEventListener('click', async function(){
+      const wasOff = sw.classList.contains('off');
+      sw.classList.toggle('off');
+      try {
+        await setAutomation(sw.dataset.key, wasOff); // wasOff=true significa que agora está ligando
+      } catch (err) {
+        sw.classList.toggle('off'); // desfaz a mudança visual se salvar falhar
+        alert('Não foi possível salvar essa automação agora: ' + err.message);
+      }
+    });
   });
+
+  async function loadAutomations() {
+    try {
+      const settings = await getAutomations();
+      document.querySelectorAll('.switch[data-key]').forEach(function(sw){
+        const key = sw.dataset.key;
+        const enabled = settings.hasOwnProperty(key) ? settings[key] : true; // padrão: ligado
+        sw.classList.toggle('off', !enabled);
+      });
+    } catch (err) {
+      console.error('Falha ao carregar automações:', err);
+    }
+  }
   document.querySelectorAll('.chip').forEach(function(chip){
     chip.addEventListener('click', function(){
       chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
