@@ -128,3 +128,20 @@ async function setAutomation(key, enabled) {
     .upsert({ user_id: user.id, key, enabled }, { onConflict: "user_id,key" });
   if (error) throw error;
 }
+
+// ---------------- PLANO / ASSINATURA ----------------
+
+// Busca o plano atual do usuário logado ('free' se nunca assinou nada)
+async function getProfilePlan() {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Usuário não autenticado.");
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("plan")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (error) throw error;
+
+  return data?.plan || "free";
+}
