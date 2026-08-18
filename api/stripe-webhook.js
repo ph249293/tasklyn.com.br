@@ -1,21 +1,8 @@
-// ============================================================
-// Tasklyn AI — Webhook do Stripe
-// Recebe avisos do Stripe quando alguém paga, cancela, etc,
-// e atualiza o plano do usuário no Supabase automaticamente.
-//
-// Precisa de TRÊS variáveis de ambiente no Vercel:
-// - STRIPE_SECRET_KEY       (Stripe > Developers > API keys > Secret key)
-// - STRIPE_WEBHOOK_SECRET   (gerada ao criar o webhook no Stripe, começa com whsec_)
-// - SUPABASE_SERVICE_ROLE_KEY  (já configurada antes)
-// ============================================================
-
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
 const SUPABASE_URL = 'https://pzzxmpdwtyhsmjwtapln.supabase.co';
 
-// Desliga o processamento automático do corpo da requisição —
-// precisamos do corpo "cru" pra verificar a assinatura do Stripe.
 export const config = {
   api: { bodyParser: false }
 };
@@ -23,20 +10,28 @@ export const config = {
 function readRawBody(readable) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    readable.on('data', (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
-    readable.on('end', () => resolve(Buffer.concat(chunks)));
+
+    readable.on('data', (chunk) => {
+      chunks.push(
+        Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
+      );
+    });
+
+    readable.on('end', () => {
+      resolve(Buffer.concat(chunks));
+    });
+
     readable.on('error', reject);
   });
 }
 
-// Descobre qual plano foi comprado com base no valor cobrado
-// (evita precisar configurar IDs de preço manualmente)
 function planFromAmount(amountCents) {
-  if (amountCents === 4900) return 'starter';   // Starter mensal
-  if (amountCents === 49000) return 'starter';  // Starter anual
-  if (amountCents === 14900) return 'pro';      // Pro mensal
-  if (amountCents === 149000) return 'pro';     // Pro anual
-  return 'pro'; // padrão de segurança
+  if (amountCents === 4900) return 'starter';
+  if (amountCents === 49000) return 'starter';
+  if (amountCents === 14900) return 'pro';
+  if (amountCents === 149000) return 'pro';
+
+  return null;
 }
 
 export default async function handler(req, res) {
@@ -49,71 +44,205 @@ export default async function handler(req, res) {
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!stripeSecret || !webhookSecret || !serviceKey) {
-    return res.status(500).send('Configuração ausente no servidor (chaves do Stripe ou Supabase).');
+    console.error('Variáveis de ambiente ausentes');
+
+    return res.status(500).json({
+      error: 'Configuração ausente no servidor'
+    });
   }
 
   const stripe = new Stripe(stripeSecret);
-  const supabase = createClient(SUPABASE_URL, serviceKey);
 
-  const rawBody = await readRawBody(req);
-  const signature = req.headers['stripe-signature'];
-
-  let event;
-  try {
-    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-  } catch (err) {
-    return res.status(400).send(`Assinatura inválida: ${err.message}`);
-  }
+  const supabase = createClient(
+    SUPABASE_URL,
+    serviceKey
+  );
 
   try {
-    // Alguém completou o pagamento
-    if (event.type === 'checkout.session.completed') {
-      const session = event.data.object;
-      const userId = session.client_reference_id;
+    const rawBody = await readRawBody(req);
+    const signature = req.headers['stripe-signature'];
 
-      if (userId) {
-        const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
-          expand: ['line_items.data.price']
-        });
-        const price = fullSession.line_items?.data?.[0]?.price;
-        const plan = planFromAmount(price?.unit_amount);
-
-        await supabase.from('profiles').upsert({
-          id: userId,
-          plan,
-          stripe_customer_id: session.customer,
-          stripe_subscription_id: session.subscription,
-          subscription_status: 'active',
-          updated_at: new Date().toISOString()
-        });
-      }
+    if (!signature) {
+      return res.status(400).json({
+        error: 'Stripe-Signature ausente'
+      });
     }
 
-    // Assinatura mudou de status (ex: cancelada, atrasada)
-    if (event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.deleted') {
+    const event = stripe.webhooks.constructEvent(
+      rawBody,
+      signature,
+      webhookSecret
+    );
+
+    console.log('EVENTO RECEBIDO:', event.type);
+
+    // ==========================================
+    // PAGAMENTO CONCLUÍDO
+    // ==========================================
+
+    if (event.type === 'checkout.session.completed') {
+      const session = event.data.object;
+
+      console.log('CHECKOUT:', session.id);
+      console.log('USER ID:', session.client_reference_id);
+      console.log('VALOR:', session.amount_total);
+
+      const userId = session.client_reference_id;
+
+      if (!userId) {
+        console.error('client_reference_id não encontrado');
+
+        return res.status(400).json({
+          error: 'client_reference_id não encontrado'
+        });
+      }
+
+      const fullSession =
+        await stripe.checkout.sessions.retrieve(
+          session.id,
+          {
+            expand: ['line_items.data.price']
+          }
+        );
+
+      const price =
+        fullSession.line_items?.data?.[0]?.price;
+
+      const amount = price?.unit_amount;
+
+      console.log('VALOR DO PRICE:', amount);
+
+      const plan = planFromAmount(amount);
+
+      if (!plan) {
+        console.error('Plano não identificado:', amount);
+
+        return res.status(400).json({
+          error: 'Plano não identificado',
+          amount
+        });
+      }
+
+      console.log('PLANO:', plan);
+
+      const { data, error } =
+        await supabase
+          .from('profiles')
+          .upsert({
+            id: userId,
+            plan,
+            stripe_customer_id: session.customer,
+            stripe_subscription_id: session.subscription,
+            subscription_status: 'active',
+            updated_at: new Date().toISOString()
+          })
+          .select();
+
+      if (error) {
+        console.error(
+          'ERRO SUPABASE:',
+          error
+        );
+
+        return res.status(500).json({
+          error: 'Erro ao atualizar o Supabase',
+          details: error.message,
+          code: error.code
+        });
+      }
+
+      console.log(
+        'PROFILE ATUALIZADO:',
+        data
+      );
+    }
+
+    // ==========================================
+    // ASSINATURA ALTERADA/CANCELADA
+    // ==========================================
+
+    if (
+      event.type === 'customer.subscription.updated' ||
+      event.type === 'customer.subscription.deleted'
+    ) {
       const subscription = event.data.object;
+
       const status = subscription.status;
 
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('stripe_subscription_id', subscription.id)
-        .maybeSingle();
+      console.log(
+        'ASSINATURA:',
+        subscription.id,
+        status
+      );
+
+      const { data: profile, error: findError } =
+        await supabase
+          .from('profiles')
+          .select('id')
+          .eq(
+            'stripe_subscription_id',
+            subscription.id
+          )
+          .maybeSingle();
+
+      if (findError) {
+        console.error(
+          'ERRO AO PROCURAR PROFILE:',
+          findError
+        );
+
+        return res.status(500).json({
+          error: 'Erro ao procurar usuário',
+          details: findError.message
+        });
+      }
 
       if (profile) {
-        const isActive = status === 'active' || status === 'trialing';
+        const isActive =
+          status === 'active' ||
+          status === 'trialing';
+
         const updateData = {
           subscription_status: status,
           updated_at: new Date().toISOString()
         };
-        if (!isActive) updateData.plan = 'free'; // cancelou/atrasou → volta pro free
 
-        await supabase.from('profiles').update(updateData).eq('id', profile.id);
+        if (!isActive) {
+          updateData.plan = 'free';
+        }
+
+        const { error: updateError } =
+          await supabase
+            .from('profiles')
+            .update(updateData)
+            .eq('id', profile.id);
+
+        if (updateError) {
+          console.error(
+            'ERRO AO ATUALIZAR PROFILE:',
+            updateError
+          );
+
+          return res.status(500).json({
+            error: 'Erro ao atualizar assinatura',
+            details: updateError.message
+          });
+        }
       }
     }
 
-    return res.status(200).json({ received: true });
+    return res.status(200).json({
+      received: true
+    });
+
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    console.error(
+      'ERRO NO WEBHOOK:',
+      err
+    );
+
+    return res.status(500).json({
+      error: err.message
+    });
   }
 }
