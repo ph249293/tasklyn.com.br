@@ -302,7 +302,7 @@
       z-index:30;
     }
     .brand, .sidebar-foot{display:none;}
-    #mobile-account-bar{display:flex !important;}
+    #mobile-account-bar{display:flex !important; flex-direction:column !important;}
     nav{flex-direction:row; width:100%; padding:0; gap:0; justify-content:space-around;}
     .nav-item{
       flex-direction:column; gap:3px; align-items:center; justify-content:center;
@@ -382,7 +382,7 @@
     <div class="avatar user-avatar-el" id="user-avatar">?</div>
     <div style="min-width:0; flex:1;">
       <div class="name user-email-el" id="user-email" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</div>
-      <div class="plan">Plano Pro</div>
+      <div class="plan user-plan-el">Plano Pro</div>
     </div>
     <button class="account-settings-btn-el" title="Conta" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
     <button class="logout-btn-el" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
@@ -390,10 +390,13 @@
 </aside>
 
 <!-- Barra de conta visível só no mobile (a barra lateral vira nav inferior e esconde o sidebar-foot) -->
-<div id="mobile-account-bar" style="display:none; position:fixed; top:0; right:0; z-index:40; padding:10px 14px; align-items:center; gap:10px; background:var(--paper); border-bottom-left-radius:12px;">
-  <span class="user-email-el" style="font-size:11.5px; color:var(--ink-soft); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</span>
-  <button class="account-settings-btn-el" title="Conta" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:14px;">⚙</button>
-  <button class="logout-btn-el" title="Sair" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:15px;">⏻</button>
+<div id="mobile-account-bar" style="display:none; flex-direction:column; align-items:flex-end; position:fixed; top:0; right:0; z-index:40; padding:10px 14px; gap:4px; background:var(--paper); border-bottom-left-radius:12px;">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <span class="user-email-el" style="font-size:11.5px; color:var(--ink-soft); max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Carregando…</span>
+    <button class="account-settings-btn-el" title="Conta" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:14px;">⚙</button>
+    <button class="logout-btn-el" title="Sair" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:15px;">⏻</button>
+  </div>
+  <span class="user-plan-el" style="font-size:10.5px; font-weight:600; color:var(--gold-deep); background:var(--paper-card); border:1px solid var(--line); border-radius:999px; padding:2px 10px;">Carregando…</span>
 </div>
 
 <div id="account-modal" style="display:none; position:fixed; inset:0; background:rgba(22,35,61,0.5); z-index:50; align-items:center; justify-content:center;">
@@ -797,9 +800,8 @@
     } catch (err) {
       console.error('Falha ao verificar plano:', err);
     }
-    const planLabelEl = document.querySelector('.sidebar-foot .plan');
     const planNames = { free: 'Sem plano ativo', starter: 'Plano Starter', pro: 'Plano Pro', enterprise: 'Plano Enterprise' };
-    if (planLabelEl) planLabelEl.textContent = planNames[plan] || 'Sem plano ativo';
+    document.querySelectorAll('.user-plan-el').forEach(el => el.textContent = planNames[plan] || 'Sem plano ativo');
 
     const isPaid = plan !== 'free';
     window._tasklynPaid = isPaid;
