@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -169,7 +169,7 @@
   .activity-name{font-size:13.5px; font-weight:600;}
   .activity-meta{font-size:11.5px; color:var(--ink-soft); margin-top:2px;}
 
-  /* Documentos */
+  /* Documents */
   .toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:12px; flex-wrap:wrap;}
   .filters{display:flex; gap:8px;}
   .chip{
@@ -222,7 +222,7 @@
   }
   .suggest-chip:hover{border-color:var(--gold);}
 
-  /* Automações */
+  /* Automations */
   .auto-list{display:flex; flex-direction:column; gap:12px;}
   .auto-row{
     display:flex; align-items:center; justify-content:space-between; gap:16px;
@@ -241,7 +241,7 @@
   }
   .switch.off::after{left:3px;}
 
-  /* Planos */
+  /* Plans */
   .billing-toggle{
     display:inline-flex; background:var(--paper-card); border:1px solid var(--line); border-radius:999px; padding:4px; gap:2px; margin-bottom:32px;
   }
@@ -286,7 +286,7 @@
   .faq-a{font-size:12.8px; color:var(--ink-soft); line-height:1.5;}
 
   /* ======================================================
-     RESPONSIVO — mesma página, layout se adapta ao mobile
+     RESPONSIVE — same page, layout adapts to mobile
      ====================================================== */
   @media (max-width: 860px){
     body{padding-bottom:76px;}
@@ -320,7 +320,7 @@
     .stat-row{display:flex; overflow-x:auto; margin:0 -16px 26px; padding:2px 16px 6px; gap:12px;}
     .stat-card{min-width:150px; flex-shrink:0;}
 
-    /* documentos */
+    /* documents */
     .doc-grid{grid-template-columns:1fr;}
     .toolbar{flex-direction:column; align-items:stretch;}
     .filters{overflow-x:auto; padding-bottom:2px;}
@@ -332,7 +332,7 @@
     .suggested-title{display:none;}
     .suggest-chip{white-space:nowrap; flex-shrink:0;}
 
-    /* planos */
+    /* plans */
     .plans-grid{grid-template-columns:1fr; gap:16px;}
     .billing-toggle{width:100%;}
     .billing-opt{flex:1; text-align:center;}
@@ -342,23 +342,23 @@
 <body>
 
 <div id="auth-screen" style="display:flex; flex-direction:column; gap:12px; max-width:340px; margin:80px auto; padding:24px; border:1px solid #DEDCD2; border-radius:14px; font-family:'IBM Plex Sans',sans-serif;">
-  <h2 style="font-family:'Fraunces',serif;">Entrar no Tasklyn</h2>
-  <input id="auth-email" type="email" placeholder="E-mail" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
-  <input id="auth-password" type="password" placeholder="Senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <h2 style="font-family:'Fraunces',serif;">Sign in to Tasklyn</h2>
+  <input id="auth-email" type="email" placeholder="Email" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <input id="auth-password" type="password" placeholder="Password" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
   <label style="display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#3B4A68; line-height:1.4; cursor:pointer;">
     <input type="checkbox" id="auth-accept-terms" style="margin-top:2px; flex-shrink:0;" onchange="document.getElementById('signup-btn').disabled = !this.checked; document.getElementById('signup-btn').style.opacity = this.checked ? '1' : '.5';">
-    Li e concordo com os <a href="/termos.html" target="_blank" style="color:#9C7626; font-weight:600;">Termos de Uso</a> e a <a href="/privacidade.html" target="_blank" style="color:#9C7626; font-weight:600;">Política de Privacidade</a>.
+    I have read and agree to the <a href="/termos.html" target="_blank" style="color:#9C7626; font-weight:600;">Terms of Use</a> and <a href="/privacidade.html" target="_blank" style="color:#9C7626; font-weight:600;">Privacy Policy</a>.
   </label>
-  <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Entrar</button>
-  <button id="signup-btn" onclick="handleSignup()" disabled style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600; opacity:.5;">Criar conta</button>
-  <a onclick="handleForgotPassword()" style="font-size:12px; color:#9C7626; font-weight:600; text-align:center; cursor:pointer;">Esqueci minha senha</a>
+  <button onclick="handleLogin()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Sign in</button>
+  <button id="signup-btn" onclick="handleSignup()" disabled style="padding:12px; background:transparent; border:1px solid #DEDCD2; border-radius:8px; font-weight:600; opacity:.5;">Create account</button>
+  <a onclick="handleForgotPassword()" style="font-size:12px; color:#9C7626; font-weight:600; text-align:center; cursor:pointer;">Forgot password</a>
   <p id="auth-message" style="font-size:12px; color:#B4553F;"></p>
 </div>
 
 <div id="reset-password-screen" style="display:none; flex-direction:column; gap:12px; max-width:340px; margin:80px auto; padding:24px; border:1px solid #DEDCD2; border-radius:14px; font-family:'IBM Plex Sans',sans-serif;">
-  <h2 style="font-family:'Fraunces',serif;">Definir nova senha</h2>
-  <input id="reset-password-field" type="password" placeholder="Nova senha" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
-  <button onclick="handleSetNewPassword()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Salvar nova senha</button>
+  <h2 style="font-family:'Fraunces',serif;">Set new password</h2>
+  <input id="reset-password-field" type="password" placeholder="New password" style="padding:10px; border:1px solid #DEDCD2; border-radius:8px;">
+  <button onclick="handleSetNewPassword()" style="padding:12px; background:#16233D; color:#fff; border:none; border-radius:8px; font-weight:600;">Save new password</button>
   <p id="reset-password-message" style="font-size:12px; color:#B4553F;"></p>
 </div>
 
@@ -368,7 +368,7 @@
     <div class="brand-mark">T</div>
     <div>
       <div class="brand-name">Tasklyn</div>
-      <div class="brand-sub">AI para empresas</div>
+      <div class="brand-sub">AI for Business</div>
     </div>
   </div>
   <nav>
@@ -381,38 +381,38 @@
   <div class="sidebar-foot" id="sidebar-foot">
     <div class="avatar user-avatar-el" id="user-avatar">?</div>
     <div style="min-width:0; flex:1;">
-      <div class="name user-email-el" id="user-email" style="overflow-wrap:break-word; word-break:break-all; white-space:normal; line-height:1.3;">Carregando…</div>
-      <div class="plan user-plan-el">Plano Pro</div>
+      <div class="name user-email-el" id="user-email" style="overflow-wrap:break-word; word-break:break-all; white-space:normal; line-height:1.3;">Loading…</div>
+      <div class="plan user-plan-el">Pro Plan</div>
     </div>
-    <button class="account-settings-btn-el" title="Conta" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
-    <button class="logout-btn-el" title="Sair" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
+    <button class="account-settings-btn-el" title="Account" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:15px; padding:4px; flex-shrink:0;">⚙</button>
+    <button class="logout-btn-el" title="Sign out" style="background:none; border:none; color:#9FADC7; cursor:pointer; font-size:16px; padding:4px; flex-shrink:0;">⏻</button>
   </div>
 </aside>
 
-<!-- Barra de conta visível só no mobile (a barra lateral vira nav inferior e esconde o sidebar-foot) -->
+<!-- Account bar visible only on mobile (sidebar becomes bottom navigation) -->
 <div id="mobile-account-bar" style="display:none; flex-direction:column; align-items:flex-end; position:fixed; top:0; right:0; z-index:40; padding:10px 14px; gap:4px; background:var(--paper); border-bottom-left-radius:12px;">
   <div style="display:flex; align-items:center; gap:10px;">
-    <span class="user-email-el" style="font-size:11.5px; color:var(--ink-soft); max-width:180px; overflow-wrap:break-word; word-break:break-all; white-space:normal; text-align:right; line-height:1.3;">Carregando…</span>
-    <button class="account-settings-btn-el" title="Conta" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:14px;">⚙</button>
-    <button class="logout-btn-el" title="Sair" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:15px;">⏻</button>
+    <span class="user-email-el" style="font-size:11.5px; color:var(--ink-soft); max-width:180px; overflow-wrap:break-word; word-break:break-all; white-space:normal; text-align:right; line-height:1.3;">Loading…</span>
+    <button class="account-settings-btn-el" title="Account" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:14px;">⚙</button>
+    <button class="logout-btn-el" title="Sign out" style="background:var(--paper-card); border:1px solid var(--line); border-radius:50%; width:30px; height:30px; color:var(--ink-soft); cursor:pointer; font-size:15px;">⏻</button>
   </div>
-  <span class="user-plan-el" style="font-size:10.5px; font-weight:600; color:var(--gold-deep); background:var(--paper-card); border:1px solid var(--line); border-radius:999px; padding:2px 10px;">Carregando…</span>
+  <span class="user-plan-el" style="font-size:10.5px; font-weight:600; color:var(--gold-deep); background:var(--paper-card); border:1px solid var(--line); border-radius:999px; padding:2px 10px;">Loading…</span>
 </div>
 
 <div id="account-modal" style="display:none; position:fixed; inset:0; background:rgba(22,35,61,0.5); z-index:50; align-items:center; justify-content:center;">
   <div style="background:#FBFBF8; border-radius:14px; padding:24px; max-width:340px; width:90%; font-family:'IBM Plex Sans',sans-serif;">
-    <h2 style="font-family:'Fraunces',serif; margin-bottom:14px;">Configurações da conta</h2>
+    <h2 style="font-family:'Fraunces',serif; margin-bottom:14px;">Account settings</h2>
 
-    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar e-mail</label>
-    <input id="new-email-field" type="email" placeholder="Novo e-mail" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
-    <button onclick="handleUpdateEmail()" class="btn btn-ghost" style="width:100%; justify-content:center; margin-bottom:16px;">Salvar novo e-mail</button>
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Change email</label>
+    <input id="new-email-field" type="email" placeholder="New email" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
+    <button onclick="handleUpdateEmail()" class="btn btn-ghost" style="width:100%; justify-content:center; margin-bottom:16px;">Save new email</button>
 
-    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar senha</label>
-    <input id="new-password-field" type="password" placeholder="Nova senha" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
-    <button onclick="handleUpdateAccountPassword()" class="btn btn-ghost" style="width:100%; justify-content:center;">Salvar nova senha</button>
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Change password</label>
+    <input id="new-password-field" type="password" placeholder="New password" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
+    <button onclick="handleUpdateAccountPassword()" class="btn btn-ghost" style="width:100%; justify-content:center;">Save new password</button>
 
     <p id="account-modal-message" style="font-size:12px; color:#B4553F; margin-top:12px;"></p>
-    <button onclick="document.getElementById('account-modal').style.display='none';" style="width:100%; margin-top:14px; background:none; border:none; color:#9FADC7; font-size:13px; cursor:pointer;">Fechar</button>
+    <button onclick="document.getElementById('account-modal').style.display='none';" style="width:100%; margin-top:14px; background:none; border:none; color:#9FADC7; font-size:13px; cursor:pointer;">Close</button>
   </div>
 </div>
 
@@ -422,57 +422,57 @@
   <section class="screen active" id="dashboard">
     <div class="topline">
       <div>
-        <div class="eyebrow">Visão geral</div>
-        <h1 class="page-title" id="dashboard-greeting">Bom dia.</h1>
-        <p class="page-sub">Aqui está o que a Tasklyn organizou e economizou para o seu time esta semana.</p>
+        <div class="eyebrow">Overview</div>
+        <h1 class="page-title" id="dashboard-greeting">Good morning.</h1>
+        <p class="page-sub">Here’s what Tasklyn organized and saved for your team this week.</p>
       </div>
-      <button class="btn btn-primary" onclick="goToDocumentosAndUpload()">＋ Novo documento</button>
+      <button class="btn btn-primary" onclick="goToDocumentosAndUpload()">＋ New document</button>
     </div>
 
     <div class="stat-row">
       <div class="stat-card">
-        <div class="stat-label">Documentos analisados</div>
+        <div class="stat-label">Documents analyzed</div>
         <div class="stat-value" id="stat-doc-count">—</div>
         <div class="stat-delta" id="stat-doc-delta"></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Documentos processados</div>
+        <div class="stat-label">Documents processed</div>
         <div class="stat-value" id="stat-processed-count">—</div>
-        <div class="stat-delta">pela IA</div>
+        <div class="stat-delta">by AI</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Vencimentos próximos</div>
+        <div class="stat-label">Upcoming deadlines</div>
         <div class="stat-value" id="stat-due-count">—</div>
-        <div class="stat-delta" style="color:var(--gold-deep)">próximos 7 dias</div>
+        <div class="stat-delta" style="color:var(--gold-deep)">next 7 days</div>
       </div>
     </div>
 
     <div class="panel">
       <div class="panel-head">
-        <div class="panel-title">Atividade recente</div>
-        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">Ver tudo →</a>
+        <div class="panel-title">Recent activity</div>
+        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">View all →</a>
       </div>
       <div id="dashboard-activity">
-        <p style="color:var(--ink-soft); font-size:13px;">Carregando…</p>
+        <p style="color:var(--ink-soft); font-size:13px;">Loading…</p>
       </div>
     </div>
   </section>
 
-  <!-- DOCUMENTOS -->
+  <!-- DOCUMENTS -->
   <section class="screen" id="documentos">
     <div class="topline">
       <div>
-        <div class="eyebrow">Gestão de documentos</div>
-        <h1 class="page-title">Documentos</h1>
-        <p class="page-sub">Envie qualquer arquivo — a Tasklyn organiza, nomeia e indexa automaticamente.</p>
+        <div class="eyebrow">Document management</div>
+        <h1 class="page-title">Documents</h1>
+        <p class="page-sub">Upload any file — Tasklyn automatically organizes, names, and indexes it.</p>
       </div>
     </div>
 
     <div class="dropzone">
-      <div class="dropzone-title">Arraste arquivos aqui</div>
-      <div class="dropzone-sub">PDF, Word, Excel ou imagens · a IA identifica o tipo e organiza sozinha</div>
+      <div class="dropzone-title">Drag files here</div>
+      <div class="dropzone-sub">PDF, Word, Excel, or images · AI identifies the file type and organizes it automatically</div>
       <input type="file" id="file-input" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*">
-      <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">Selecionar arquivos</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">Select files</button>
       <p id="upload-status" style="font-size:12px; color:var(--ink-soft); margin-top:10px;"></p>
     </div>
 
@@ -483,7 +483,7 @@
     </div>
 
     <div class="doc-grid" id="doc-grid">
-      <p style="color:var(--ink-soft); font-size:13px;">Carregando documentos…</p>
+      <p style="color:var(--ink-soft); font-size:13px;">Loading documents…</p>
     </div>
   </section>
 
@@ -492,38 +492,38 @@
     <div class="topline">
       <div>
         <div class="eyebrow">Chat com IA</div>
-        <h1 class="page-title">Pergunte à Tasklyn</h1>
-        <p class="page-sub">As respostas vêm sempre dos documentos da sua empresa, com a fonte indicada.</p>
+        <h1 class="page-title">Ask Tasklyn</h1>
+        <p class="page-sub">Answers always come from your company documents, with the source provided.</p>
       </div>
     </div>
 
     <div class="chat-shell">
       <div class="chat-window">
         <div class="chat-log" id="chat-log">
-          <div class="msg ai">Olá! Sou a IA da Tasklyn. Envie seus documentos na aba Documentos e depois me pergunte algo sobre eles aqui.</div>
+          <div class="msg ai">Hi! I’m Tasklyn AI. Upload your documents in the Documents tab, then ask me anything about them here.</div>
         </div>
         <div class="chat-input">
-          <input type="text" id="chat-input-field" placeholder="Pergunte algo sobre seus documentos…">
+          <input type="text" id="chat-input-field" placeholder="Ask something about your documents…">
           <button class="btn btn-primary" id="chat-send-btn">Enviar</button>
         </div>
       </div>
 
       <div class="suggested">
-        <div class="suggested-title">Perguntas rápidas</div>
-        <div class="suggest-chip" onclick="sendSuggested(this)">Quais documentos vencem em breve?</div>
-        <div class="suggest-chip" onclick="sendSuggested(this)">Resuma meus documentos mais recentes.</div>
-        <div class="suggest-chip" onclick="sendSuggested(this)">Quantos documentos eu já enviei?</div>
+        <div class="suggested-title">Quick questions</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Which documents expire soon?</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">Summarize my most recent documents.</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">How many documents have I uploaded?</div>
       </div>
     </div>
   </section>
 
-  <!-- AUTOMAÇÕES -->
+  <!-- AUTOMATIONS -->
   <section class="screen" id="automacoes">
     <div class="topline">
       <div>
-        <div class="eyebrow">Automações</div>
-        <h1 class="page-title">Automações</h1>
-        <p class="page-sub">Tarefas que a Tasklyn executa sozinha, sempre que um documento entra no sistema.</p>
+        <div class="eyebrow">Automations</div>
+        <h1 class="page-title">Automations</h1>
+        <p class="page-sub">Tasks Tasklyn runs automatically whenever a document enters the system.</p>
       </div>
     </div>
 
@@ -532,8 +532,8 @@
         <div class="auto-left">
           <div class="auto-ico">◐</div>
           <div>
-            <div class="auto-name">Resumir documentos novos</div>
-            <div class="auto-desc">Todo arquivo enviado é analisado pela IA automaticamente (resumo, categoria e vencimento).</div>
+            <div class="auto-name">Summarize new documents</div>
+            <div class="auto-desc">Every uploaded file is automatically analyzed by AI (summary, category, and deadline).</div>
           </div>
         </div>
         <div class="switch" data-key="resumir"></div>
@@ -543,8 +543,8 @@
         <div class="auto-left">
           <div class="auto-ico">◷</div>
           <div>
-            <div class="auto-name">Avisar sobre vencimentos</div>
-            <div class="auto-desc">Mostra no Dashboard os documentos com vencimento nos próximos 7 dias.</div>
+            <div class="auto-name">Deadline alerts</div>
+            <div class="auto-desc">Shows documents with deadlines in the next 7 days on your Dashboard.</div>
           </div>
         </div>
         <div class="switch" data-key="vencimentos"></div>
@@ -554,8 +554,8 @@
         <div class="auto-left">
           <div class="auto-ico">▤</div>
           <div>
-            <div class="auto-name">Organizar arquivos recebidos</div>
-            <div class="auto-desc">Classifica cada documento em Contratos, Financeiro, Clientes ou Outros com base no conteúdo.</div>
+            <div class="auto-name">Organize incoming files</div>
+            <div class="auto-desc">Classifies each document as Contracts, Finance, Clients, or Other based on its content.</div>
           </div>
         </div>
         <div class="switch" data-key="organizar"></div>
@@ -565,8 +565,8 @@
         <div class="auto-left">
           <div class="auto-ico">✉</div>
           <div>
-            <div class="auto-name">Rascunhar e-mails de resposta <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
-            <div class="auto-desc">Gera um rascunho de e-mail baseado no documento recebido, para revisão.</div>
+            <div class="auto-name">Draft reply emails <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-desc">Generates a draft email based on the document received, ready for review.</div>
           </div>
         </div>
         <div class="switch off" style="pointer-events:none;"></div>
@@ -576,8 +576,8 @@
         <div class="auto-left">
           <div class="auto-ico">◉</div>
           <div>
-            <div class="auto-name">Relatório semanal de atividade <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
-            <div class="auto-desc">Envia um resumo do que foi processado e do tempo economizado toda sexta-feira.</div>
+            <div class="auto-name">Weekly activity report <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-desc">Sends a weekly summary of what was processed and how much time was saved every Friday.</div>
           </div>
         </div>
         <div class="switch off" style="pointer-events:none;"></div>
@@ -585,94 +585,94 @@
     </div>
   </section>
 
-  <!-- PLANOS -->
+  <!-- PLANS -->
   <section class="screen" id="planos">
     <div id="paywall-banner" style="display:none; background:var(--sage-soft); border:1px solid var(--sage); border-radius:12px; padding:16px 20px; margin-bottom:24px;">
-      <strong style="color:var(--ink);">Assine um plano pra desbloquear a Tasklyn.</strong>
-      <p style="font-size:13px; color:var(--ink-soft); margin-top:4px;">Dashboard, Documentos, Chat com IA e Automações ficam disponíveis assim que o pagamento é confirmado.</p>
+      <strong style="color:var(--ink);">Subscribe to a plan to unlock Tasklyn.</strong>
+      <p style="font-size:13px; color:var(--ink-soft); margin-top:4px;">Dashboard, Documents, AI Chat, and Automations become available as soon as payment is confirmed.</p>
     </div>
     <div class="topline">
       <div>
-        <div class="eyebrow">Planos e preços</div>
-        <h1 class="page-title">Escolha o plano da sua equipe</h1>
-        <p class="page-sub">Comece pequeno e cresça — todos os planos incluem organização automática de documentos.</p>
+        <div class="eyebrow">Plans & pricing</div>
+        <h1 class="page-title">Choose your team plan</h1>
+        <p class="page-sub">Start small and scale — every plan includes automatic document organization.</p>
       </div>
     </div>
 
     <div class="billing-toggle">
-      <button class="billing-opt active" data-period="monthly">Mensal</button>
-      <button class="billing-opt" data-period="yearly">Anual · 2 meses grátis</button>
+      <button class="billing-opt active" data-period="monthly">Monthly</button>
+      <button class="billing-opt" data-period="yearly">Yearly · 2 months free</button>
     </div>
 
     <div class="plans-grid">
       <div class="plan-card">
         <div class="plan-name">Starter</div>
-        <div class="plan-desc">Para times pequenos organizarem os primeiros documentos.</div>
+        <div class="plan-desc">For small teams getting their first documents organized.</div>
         <div class="plan-price">
-          <span class="amount" data-monthly="R$49" data-yearly="R$490">R$49</span>
-          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+          <span class="amount" data-monthly="$9" data-yearly="$90">$9</span>
+          <span class="period" data-monthly="/month" data-yearly="/year">/month</span>
         </div>
         <ul class="feat-list">
-          <li class="feat-row">Até 300 documentos/mês</li>
-          <li class="feat-row">2 usuários</li>
-          <li class="feat-row">Chat com IA ilimitado</li>
-          <li class="feat-row">1 automação ativa</li>
-          <li class="feat-row">Suporte por e-mail</li>
+          <li class="feat-row">Up to 300 documents/month</li>
+          <li class="feat-row">2 users</li>
+          <li class="feat-row">Unlimited AI chat</li>
+          <li class="feat-row">1 active automation</li>
+          <li class="feat-row">Email support</li>
         </ul>
-        <a class="btn btn-ghost plan-cta" data-link-monthly="https://buy.stripe.com/fZucN5ebP5xk6rh5FeaMU02" data-link-yearly="https://buy.stripe.com/6oU9ATd7L5xk5nd4BaaMU05" href="#" target="_blank">Começar agora</a>
+        <a class="btn btn-ghost plan-cta" data-link-monthly="" data-link-yearly="" href="#" target="_blank">Get started</a>
       </div>
 
       <div class="plan-card featured">
-        <div class="plan-badge">Mais escolhido</div>
+        <div class="plan-badge">Most popular</div>
         <div class="plan-name">Pro</div>
-        <div class="plan-desc">Para escritórios com múltiplos clientes e vencimentos recorrentes.</div>
+        <div class="plan-desc">For offices managing multiple clients and recurring deadlines.</div>
         <div class="plan-price">
-          <span class="amount" data-monthly="R$149" data-yearly="R$1.490">R$149</span>
-          <span class="period" data-monthly="/mês" data-yearly="/ano">/mês</span>
+          <span class="amount" data-monthly="$29" data-yearly="$290">$29</span>
+          <span class="period" data-monthly="/month" data-yearly="/year">/month</span>
         </div>
         <ul class="feat-list">
-          <li class="feat-row">Até 2.000 documentos/mês</li>
-          <li class="feat-row">10 usuários</li>
-          <li class="feat-row">Chat com IA ilimitado</li>
-          <li class="feat-row">Automações ilimitadas</li>
-          <li class="feat-row">Alertas de vencimento</li>
-          <li class="feat-row">Suporte prioritário</li>
+          <li class="feat-row">Up to 2,000 documents/month</li>
+          <li class="feat-row">10 users</li>
+          <li class="feat-row">Unlimited AI chat</li>
+          <li class="feat-row">Unlimited automations</li>
+          <li class="feat-row">Deadline alerts</li>
+          <li class="feat-row">Priority support</li>
         </ul>
-        <a class="btn plan-cta" data-link-monthly="https://buy.stripe.com/4gMeVdebP4tgaHxebKaMU04" data-link-yearly="https://buy.stripe.com/dRm5kDaZDcZM8zp4BaaMU03" href="#" target="_blank">Assinar Pro</a>
+        <a class="btn plan-cta" data-link-monthly="" data-link-yearly="" href="#" target="_blank">Start Pro</a>
       </div>
 
       <div class="plan-card">
         <div class="plan-name">Enterprise</div>
-        <div class="plan-desc">Para empresas maiores com integrações e volume personalizados.</div>
-        <div class="plan-price"><span class="custom">Sob consulta</span></div>
+        <div class="plan-desc">For larger organizations with integrations and custom volume.</div>
+        <div class="plan-price"><span class="custom">Custom pricing</span></div>
         <ul class="feat-list">
-          <li class="feat-row">Documentos ilimitados</li>
-          <li class="feat-row">Usuários ilimitados</li>
-          <li class="feat-row">Integrações dedicadas</li>
-          <li class="feat-row">Automações personalizadas</li>
-          <li class="feat-row">Gerente de conta dedicado</li>
+          <li class="feat-row">Unlimited documents</li>
+          <li class="feat-row">Unlimited users</li>
+          <li class="feat-row">Dedicated integrations</li>
+          <li class="feat-row">Custom automations</li>
+          <li class="feat-row">Dedicated account manager</li>
         </ul>
-        <a class="btn btn-ghost plan-cta" href="mailto:suporte.tasklyn@gmail.com?subject=Interesse%20no%20plano%20Enterprise%20da%20Tasklyn&body=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20Enterprise%20da%20Tasklyn%20para%20a%20minha%20empresa.">Falar com vendas</a>
+        <a class="btn btn-ghost plan-cta" href="mailto:suporte.tasklyn@gmail.com?subject=Tasklyn%20Enterprise%20Plan%20Inquiry&body=Hi%2C%20I%27d%20like%20to%20learn%20more%20about%20the%20Tasklyn%20Enterprise%20plan%20for%20my%20company.">Talk to sales</a>
       </div>
     </div>
 
     <div class="panel faq-panel">
-      <div class="panel-title" style="margin-bottom:14px;">Perguntas frequentes</div>
+      <div class="panel-title" style="margin-bottom:14px;">Frequently asked questions</div>
       <div class="faq-item">
-        <div class="faq-q">Posso trocar de plano depois?</div>
-        <div class="faq-a">Sim, o upgrade ou downgrade pode ser feito a qualquer momento, com cobrança proporcional.</div>
+        <div class="faq-q">Can I change my plan later?</div>
+        <div class="faq-a">Yes. You can upgrade or downgrade at any time, with prorated billing.</div>
       </div>
       <div class="faq-item">
-        <div class="faq-q">Os documentos ficam seguros?</div>
-        <div class="faq-a">Sim, todos os arquivos são armazenados de forma criptografada e acessíveis apenas pela sua equipe.</div>
+        <div class="faq-q">Are my documents secure?</div>
+        <div class="faq-a">Yes. All files are stored with encryption and are accessible only to your team.</div>
       </div>
     </div>
 
     <p style="text-align:center; font-size:12.5px; color:var(--ink-soft); margin-top:24px;">
-      Ao assinar, você concorda com nossos
-      <a href="/termos.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Termos de Uso</a>
+      By subscribing, you agree to our
+      <a href="/termos.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Terms of Use</a>
       e nossa
-      <a href="/privacidade.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Política de Privacidade</a>.
+      <a href="/privacidade.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Privacy Policy</a>.
     </p>
   </section>
 
@@ -695,7 +695,7 @@
       const user = await getCurrentUser();
       initApp(user);
     } catch (err) {
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
     }
   }
 
@@ -704,17 +704,17 @@
     const password = document.getElementById('auth-password').value;
     const msg = document.getElementById('auth-message');
     if (!document.getElementById('auth-accept-terms').checked) {
-      msg.textContent = 'Você precisa aceitar os Termos de Uso e a Política de Privacidade para criar sua conta.';
+      msg.textContent = 'You must accept the Terms of Use and Privacy Policy to create your account.';
       return;
     }
     try {
       await signUp(email, password);
     } catch (err) {
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
       return;
     }
     // tenta entrar imediatamente com as mesmas credenciais.
-    // Se a confirmação por e-mail ainda estiver exigida no Supabase, isso falha
+    // If email confirmation is still required in Supabase, this fails
     // com uma mensagem clara em vez de travar a tela silenciosamente.
     try {
       await signIn(email, password);
@@ -724,7 +724,7 @@
       initApp(user);
     } catch (err) {
       msg.style.color = '#4F7863';
-      msg.textContent = 'Conta criada, mas o login automático falhou (' + err.message + '). Isso geralmente significa que a confirmação por e-mail ainda está ativada no Supabase.';
+      msg.textContent = 'Account created, but automatic sign-in failed (' + err.message + '). This usually means email confirmation is still enabled in Supabase.';
     }
   }
 
@@ -732,15 +732,15 @@
     const email = document.getElementById('auth-email').value;
     const msg = document.getElementById('auth-message');
     if (!email) {
-      msg.textContent = 'Digite seu e-mail no campo acima primeiro, depois toque em "Esqueci minha senha".';
+      msg.textContent = 'Enter your email above first, then select "Forgot password".';
       return;
     }
     try {
       await resetPassword(email);
       msg.style.color = '#4F7863';
-      msg.textContent = 'Enviamos um link para redefinir sua senha em ' + email + '. Verifique sua caixa de entrada.';
+      msg.textContent = 'We sent a password reset link to ' + email + '. Check your inbox.';
     } catch (err) {
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
     }
   }
 
@@ -748,23 +748,23 @@
     const newPassword = document.getElementById('reset-password-field').value;
     const msg = document.getElementById('reset-password-message');
     if (!newPassword || newPassword.length < 6) {
-      msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.';
+      msg.textContent = 'Password must be at least 6 characters long.';
       return;
     }
     try {
       await updatePassword(newPassword);
       msg.style.color = '#4F7863';
-      msg.textContent = 'Senha atualizada! Redirecionando…';
+      msg.textContent = 'Password updated! Redirecting…';
       setTimeout(() => { window.location.href = '/'; }, 1500);
     } catch (err) {
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
     }
   }
 
   window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('app-content').style.display = 'none';
 
-    // Se o link veio de um e-mail de recuperação de senha, mostra a tela de nova senha
+    // If the link came from a password recovery email, show the new password screen
     if (window.location.hash.includes('type=recovery')) {
       document.getElementById('auth-screen').style.display = 'none';
       document.getElementById('reset-password-screen').style.display = 'flex';
@@ -779,14 +779,14 @@
     }
   });
 
-  // ---------------- USUÁRIO / LOGOUT ----------------
+  // ---------------- USER / LOGOUT ----------------
 
   function initApp(user) {
     window._tasklynUser = user;
     document.querySelectorAll('.user-email-el').forEach(el => el.textContent = user.email);
     document.querySelectorAll('.user-avatar-el').forEach(el => el.textContent = user.email.slice(0, 2).toUpperCase());
     const firstName = user.email.split('@')[0];
-    document.getElementById('dashboard-greeting').textContent = `Bom dia, ${firstName}.`;
+    document.getElementById('dashboard-greeting').textContent = `Good morning, ${firstName}.`;
     applyBillingPeriod(document.querySelector('.billing-opt.active')?.dataset.period || 'monthly');
     refreshDocuments();
     loadAutomations();
@@ -798,10 +798,10 @@
     try {
       plan = await getProfilePlan();
     } catch (err) {
-      console.error('Falha ao verificar plano:', err);
+      console.error('Failed to verify plan:', err);
     }
-    const planNames = { free: 'Sem plano ativo', starter: 'Plano Starter', pro: 'Plano Pro', enterprise: 'Plano Enterprise' };
-    document.querySelectorAll('.user-plan-el').forEach(el => el.textContent = planNames[plan] || 'Sem plano ativo');
+    const planNames = { free: 'No active plan', starter: 'Starter Plan', pro: 'Pro Plan', enterprise: 'Enterprise Plan' };
+    document.querySelectorAll('.user-plan-el').forEach(el => el.textContent = planNames[plan] || 'No active plan');
 
     const isPaid = plan !== 'free';
     window._tasklynPaid = isPaid;
@@ -812,7 +812,7 @@
     });
 
     if (!isPaid) {
-      // força a ida pra tela de Planos e mostra o aviso
+      // redirect to the Plans screen and show the notice
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.querySelector('[data-screen="planos"]').classList.add('active');
@@ -836,33 +836,33 @@
   async function handleUpdateEmail() {
     const newEmail = document.getElementById('new-email-field').value;
     const msg = document.getElementById('account-modal-message');
-    if (!newEmail) { msg.textContent = 'Digite o novo e-mail.'; return; }
+    if (!newEmail) { msg.textContent = 'Enter the new email.'; return; }
     try {
       await updateEmail(newEmail);
       msg.style.color = '#4F7863';
-      msg.textContent = 'Verifique o novo e-mail para confirmar a troca.';
+      msg.textContent = 'Check the new email to confirm the change.';
     } catch (err) {
       msg.style.color = '#B4553F';
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
     }
   }
 
   async function handleUpdateAccountPassword() {
     const newPassword = document.getElementById('new-password-field').value;
     const msg = document.getElementById('account-modal-message');
-    if (!newPassword || newPassword.length < 6) { msg.textContent = 'A senha precisa ter pelo menos 6 caracteres.'; return; }
+    if (!newPassword || newPassword.length < 6) { msg.textContent = 'Password must be at least 6 characters long.'; return; }
     try {
       await updatePassword(newPassword);
       msg.style.color = '#4F7863';
-      msg.textContent = 'Senha atualizada com sucesso.';
+      msg.textContent = 'Password updated successfully.';
       document.getElementById('new-password-field').value = '';
     } catch (err) {
       msg.style.color = '#B4553F';
-      msg.textContent = 'Erro: ' + err.message;
+      msg.textContent = 'Error: ' + err.message;
     }
   }
 
-  // ---------------- UPLOAD DE DOCUMENTOS ----------------
+  // ---------------- DOCUMENT UPLOAD ----------------
 
   document.getElementById('file-input').addEventListener('change', async (e) => {
     const files = Array.from(e.target.files);
@@ -880,7 +880,7 @@
         const autoSummarize = settings.hasOwnProperty('resumir') ? settings.resumir : true;
 
         if (autoSummarize) {
-          statusEl.textContent = `Analisando ${file.name} com IA…`;
+          statusEl.textContent = `Analyzing ${file.name} with AI…`;
           try {
             const procResponse = await fetch('/api/process-document', {
               method: 'POST',
@@ -891,20 +891,20 @@
               const rawText = await procResponse.text();
               let detail = rawText;
               try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
-              statusEl.textContent = `Erro ao analisar ${file.name}: ${detail}`;
+              statusEl.textContent = `Error analyzing ${file.name}: ${detail}`;
               hadError = true;
             }
           } catch (procErr) {
-            statusEl.textContent = `Erro ao analisar ${file.name}: ${procErr.message}`;
+            statusEl.textContent = `Error analyzing ${file.name}: ${procErr.message}`;
             hadError = true;
           }
         }
       } catch (err) {
-        statusEl.textContent = `Erro ao enviar ${file.name}: ${err.message}`;
+        statusEl.textContent = `Error uploading ${file.name}: ${err.message}`;
         return;
       }
     }
-    if (!hadError) statusEl.textContent = 'Envio concluído.';
+    if (!hadError) statusEl.textContent = 'Upload complete.';
     e.target.value = '';
     refreshDocuments();
   });
@@ -921,11 +921,11 @@
   function timeAgo(dateStr) {
     const diffMs = Date.now() - new Date(dateStr).getTime();
     const mins = Math.floor(diffMs / 60000);
-    if (mins < 1) return 'agora mesmo';
-    if (mins < 60) return `há ${mins} min`;
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins} min ago`;
     const hours = Math.floor(mins / 60);
-    if (hours < 24) return `há ${hours}h`;
-    return `há ${Math.floor(hours / 24)} dias`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${Math.floor(hours / 24)} days ago`;
   }
 
   async function refreshDocuments() {
@@ -942,18 +942,18 @@
       document.getElementById('stat-doc-count').textContent = total;
       document.getElementById('stat-processed-count').textContent = processed;
       document.getElementById('stat-due-count').textContent = due;
-      document.getElementById('stat-doc-delta').textContent = total > 0 ? `${total} no total` : 'nenhum ainda';
+      document.getElementById('stat-doc-delta').textContent = total > 0 ? `${total} total` : 'none yet';
 
       if (!docs || docs.length === 0) {
-        grid.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhum documento enviado ainda. Use "Selecionar arquivos" acima.</p>';
-        activityBox.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">Nenhuma atividade ainda. Envie seu primeiro documento na aba Documentos.</p>';
+        grid.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">No documents uploaded yet. Use "Select files" above.</p>';
+        activityBox.innerHTML = '<p style="color:var(--ink-soft); font-size:13px;">No activity yet. Upload your first document in the Documents tab.</p>';
         return;
       }
 
       grid.innerHTML = docs.map(doc => {
         const isDue = doc.due_date && (new Date(doc.due_date) - new Date()) >= 0 && (new Date(doc.due_date) - new Date()) / 86400000 <= 30;
         const stampClass = isDue ? 'due' : (doc.status === 'processed' ? 'processed' : 'summary');
-        const stampText = isDue ? `vence ${doc.due_date.split('-').reverse().join('/')}` : (doc.status === 'processed' ? 'ok' : 'processando');
+        const stampText = isDue ? `expires ${doc.due_date.split('-')[1]}/${doc.due_date.split('-')[2]}/${doc.due_date.split('-')[0]}` : (doc.status === 'processed' ? 'done' : 'processing');
         return `
         <div class="doc-card">
           <div class="doc-top">
@@ -976,11 +976,11 @@
               <div class="activity-meta">${doc.category} · ${timeAgo(doc.created_at)}</div>
             </div>
           </div>
-          <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'processado' : 'processando'}</span>
+          <span class="stamp ${doc.status === 'processed' ? 'processed' : 'summary'}">${doc.status === 'processed' ? 'processed' : 'processing'}</span>
         </div>
       `).join('');
     } catch (err) {
-      grid.innerHTML = `<p style="color:var(--danger); font-size:13px;">Erro ao carregar documentos: ${err.message}</p>`;
+      grid.innerHTML = `<p style="color:var(--danger); font-size:13px;">Error loading documents: ${err.message}</p>`;
       activityBox.innerHTML = '';
     }
   }
@@ -1004,14 +1004,14 @@
 
     try {
       const docs = window._tasklynDocs || [];
-      const docContext = docs.map(d => `- ${d.name} (categoria: ${d.category}, status: ${d.status}${d.due_date ? ', vence em ' + d.due_date : ''})`).join('\n');
+      const docContext = docs.map(d => `${d.name} (category: ${d.category}, status: ${d.status}${d.due_date ? ', expires ' + d.due_date : ''})`).join('\n');
 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: text,
-          documents: docContext || 'Nenhum documento enviado ainda.'
+          documents: docContext || 'No documents uploaded yet.'
         })
       });
 
@@ -1024,7 +1024,7 @@
       const data = await response.json();
       thinkingEl.textContent = data.reply;
     } catch (err) {
-      thinkingEl.textContent = 'Erro ao falar com a IA: ' + err.message;
+      thinkingEl.textContent = 'Error talking to AI: ' + err.message;
     }
   }
 
@@ -1087,8 +1087,8 @@
       try {
         await setAutomation(sw.dataset.key, wasOff); // wasOff=true significa que agora está ligando
       } catch (err) {
-        sw.classList.toggle('off'); // desfaz a mudança visual se salvar falhar
-        alert('Não foi possível salvar essa automação agora: ' + err.message);
+        sw.classList.toggle('off'); // revert the visual change if saving fails
+        alert('Could not save this automation right now: ' + err.message);
       }
     });
   });
@@ -1102,7 +1102,7 @@
         sw.classList.toggle('off', !enabled);
       });
     } catch (err) {
-      console.error('Falha ao carregar automações:', err);
+      console.error('Failed to load automations:', err);
     }
   }
   document.querySelectorAll('.chip').forEach(function(chip){
@@ -1112,8 +1112,8 @@
     });
   });
 
-  // ---------------- TOGGLE MENSAL / ANUAL ----------------
-  function buildStripeLink(baseUrl) {
+  // ---------------- MONTHLY / YEARLY TOGGLE ----------------
+  // Before launch, add the US Stripe Checkout/Payment Links for the $9/$29 plans.\n  function buildStripeLink(baseUrl) {
     if (!baseUrl || !window._tasklynUser) return baseUrl;
     const params = new URLSearchParams({
       client_reference_id: window._tasklynUser.id,
@@ -1132,7 +1132,7 @@
       if (link) btn.href = buildStripeLink(link);
     });
   }
-  applyBillingPeriod('monthly'); // preenche os links assim que a página carrega
+  applyBillingPeriod('monthly'); // sets the links as soon as the page loads
 
   document.querySelectorAll('.billing-opt').forEach(function(opt){
     opt.addEventListener('click', function(){
