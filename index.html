@@ -373,9 +373,9 @@
   </div>
   <nav>
     <button class="nav-item active" data-screen="dashboard"><span class="nav-icon">◧</span> Dashboard</button>
-    <button class="nav-item" data-screen="documentos"><span class="nav-icon">▤</span> Documentos</button>
-    <button class="nav-item" data-screen="chat"><span class="nav-icon">◐</span> Chat com IA</button>
-    <button class="nav-item" data-screen="automacoes"><span class="nav-icon">◎</span> Automações</button>
+    <button class="nav-item" data-screen="documentos"><span class="nav-icon">▤</span> Documents</button>
+    <button class="nav-item" data-screen="chat"><span class="nav-icon">◐</span> AI Chat</button>
+    <button class="nav-item" data-screen="automacoes"><span class="nav-icon">◎</span> Automations</button>
     <button class="nav-item" data-screen="planos"><span class="nav-icon">◈</span> Planos</button>
   </nav>
   <div class="sidebar-foot" id="sidebar-foot">
@@ -426,7 +426,7 @@
         <h1 class="page-title" id="dashboard-greeting">Good morning.</h1>
         <p class="page-sub">Here’s what Tasklyn organized and saved for your team this week.</p>
       </div>
-      <button class="btn btn-primary" onclick="goToDocumentosAndUpload()">＋ New document</button>
+      <button class="btn btn-primary" onclick="goToDocumentsAndUpload()">＋ New document</button>
     </div>
 
     <div class="stat-row">
@@ -478,7 +478,7 @@
 
     <div class="toolbar">
       <div class="filters">
-        <button class="chip active">Todos</button>
+        <button class="chip active">All</button>
       </div>
     </div>
 
@@ -491,7 +491,7 @@
   <section class="screen" id="chat">
     <div class="topline">
       <div>
-        <div class="eyebrow">Chat com IA</div>
+        <div class="eyebrow">AI Chat</div>
         <h1 class="page-title">Ask Tasklyn</h1>
         <p class="page-sub">Answers always come from your company documents, with the source provided.</p>
       </div>
@@ -504,7 +504,7 @@
         </div>
         <div class="chat-input">
           <input type="text" id="chat-input-field" placeholder="Ask something about your documents…">
-          <button class="btn btn-primary" id="chat-send-btn">Enviar</button>
+          <button class="btn btn-primary" id="chat-send-btn">Send</button>
         </div>
       </div>
 
@@ -565,7 +565,7 @@
         <div class="auto-left">
           <div class="auto-ico">✉</div>
           <div>
-            <div class="auto-name">Draft reply emails <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-name">Draft reply emails <span class="stamp summary" style="margin-left:4px;">Coming soon</span></div>
             <div class="auto-desc">Generates a draft email based on the document received, ready for review.</div>
           </div>
         </div>
@@ -576,7 +576,7 @@
         <div class="auto-left">
           <div class="auto-ico">◉</div>
           <div>
-            <div class="auto-name">Weekly activity report <span class="stamp summary" style="margin-left:4px;">em breve</span></div>
+            <div class="auto-name">Weekly activity report <span class="stamp summary" style="margin-left:4px;">Coming soon</span></div>
             <div class="auto-desc">Sends a weekly summary of what was processed and how much time was saved every Friday.</div>
           </div>
         </div>
@@ -671,7 +671,7 @@
     <p style="text-align:center; font-size:12.5px; color:var(--ink-soft); margin-top:24px;">
       By subscribing, you agree to our
       <a href="/termos.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Terms of Use</a>
-      e nossa
+      and our
       <a href="/privacidade.html" style="color:var(--gold-deep); font-weight:600; text-decoration:none;">Privacy Policy</a>.
     </p>
   </section>
@@ -713,9 +713,9 @@
       msg.textContent = 'Error: ' + err.message;
       return;
     }
-    // tenta entrar imediatamente com as mesmas credenciais.
+    // tries to sign in immediately with the same credentials.
     // If email confirmation is still required in Supabase, this fails
-    // com uma mensagem clara em vez de travar a tela silenciosamente.
+    // with a clear message instead of silently freezing the screen.
     try {
       await signIn(email, password);
       const user = await getCurrentUser();
@@ -871,7 +871,7 @@
     let hadError = false;
 
     for (const file of files) {
-      statusEl.textContent = `Enviando ${file.name}…`;
+      statusEl.textContent = `Uploading ${file.name}…`;
       try {
         const doc = await uploadDocument(file);
         refreshDocuments();
@@ -890,7 +890,7 @@
             if (!procResponse.ok) {
               const rawText = await procResponse.text();
               let detail = rawText;
-              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
+              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* keeps plain text */ }
               statusEl.textContent = `Error analyzing ${file.name}: ${detail}`;
               hadError = true;
             }
@@ -935,7 +935,7 @@
       const docs = await listDocuments();
       window._tasklynDocs = docs || [];
 
-      // Estatísticas
+      // Statistics
       const total = docs ? docs.length : 0;
       const processed = docs ? docs.filter(d => d.status === 'processed').length : 0;
       const due = docs ? docs.filter(d => d.due_date && (new Date(d.due_date) - new Date()) / 86400000 <= 7 && (new Date(d.due_date) - new Date()) >= 0).length : 0;
@@ -985,7 +985,7 @@
     }
   }
 
-  // ---------------- CHAT COM IA ----------------
+  // ---------------- AI CHAT ----------------
 
   function appendMessage(text, role) {
     const log = document.getElementById('chat-log');
@@ -1000,7 +1000,7 @@
   async function sendChatMessage(text) {
     if (!text.trim()) return;
     appendMessage(text, 'user');
-    const thinkingEl = appendMessage('Pensando…', 'ai');
+    const thinkingEl = appendMessage('Thinking…', 'ai');
 
     try {
       const docs = window._tasklynDocs || [];
@@ -1018,7 +1018,7 @@
       if (!response.ok) {
         const rawText = await response.text();
         let detail = rawText;
-        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* mantém texto puro */ }
+        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* keeps plain text */ }
         throw new Error(`(${response.status}) ${detail}`);
       }
       const data = await response.json();
@@ -1046,7 +1046,7 @@
     sendChatMessage(el.textContent);
   }
 
-  function goToDocumentosAndUpload() {
+  function goToDocumentsAndUpload() {
     if (!window._tasklynPaid) {
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1054,8 +1054,8 @@
       document.getElementById('planos').classList.add('active');
       return;
     }
-    // troca de aba diretamente via classes, sem disparar um segundo clique
-    // (dois .click() em sequência podem perder a permissão do Safari pra abrir o seletor de arquivo)
+    // switches tabs directly via classes, without triggering a second click
+    // (two consecutive .click() calls can cause Safari to lose permission to open the file picker)
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.querySelector('[data-screen="documentos"]').classList.add('active');
@@ -1085,7 +1085,7 @@
       const wasOff = sw.classList.contains('off');
       sw.classList.toggle('off');
       try {
-        await setAutomation(sw.dataset.key, wasOff); // wasOff=true significa que agora está ligando
+        await setAutomation(sw.dataset.key, wasOff); // wasOff=true means it is now being turned on
       } catch (err) {
         sw.classList.toggle('off'); // revert the visual change if saving fails
         alert('Could not save this automation right now: ' + err.message);
@@ -1098,7 +1098,7 @@
       const settings = await getAutomations();
       document.querySelectorAll('.switch[data-key]').forEach(function(sw){
         const key = sw.dataset.key;
-        const enabled = settings.hasOwnProperty(key) ? settings[key] : true; // padrão: ligado
+        const enabled = settings.hasOwnProperty(key) ? settings[key] : true; // default: enabled
         sw.classList.toggle('off', !enabled);
       });
     } catch (err) {
