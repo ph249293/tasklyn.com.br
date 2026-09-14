@@ -401,18 +401,18 @@
 
 <div id="account-modal" style="display:none; position:fixed; inset:0; background:rgba(22,35,61,0.5); z-index:50; align-items:center; justify-content:center;">
   <div style="background:#FBFBF8; border-radius:14px; padding:24px; max-width:340px; width:90%; font-family:'IBM Plex Sans',sans-serif;">
-    <h2 style="font-family:'Fraunces',serif; margin-bottom:14px;">Configurações da conta</h2>
+    <h2 style="font-family:'Fraunces',serif; margin-bottom:14px;">Account settings</h2>
 
-    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar e-mail</label>
-    <input id="new-email-field" type="email" placeholder="Novo e-mail" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Change email</label>
+    <input id="new-email-field" type="email" placeholder="New email" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
     <button onclick="handleUpdateEmail()" class="btn btn-ghost" style="width:100%; justify-content:center; margin-bottom:16px;">Save new email</button>
 
-    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Trocar senha</label>
+    <label style="font-size:12px; font-weight:600; color:#3B4A68;">Change password</label>
     <input id="new-password-field" type="password" placeholder="New password" style="width:100%; padding:10px; border:1px solid #DEDCD2; border-radius:8px; margin:6px 0 10px;">
     <button onclick="handleUpdateAccountPassword()" class="btn btn-ghost" style="width:100%; justify-content:center;">Save new password</button>
 
     <p id="account-modal-message" style="font-size:12px; color:#B4553F; margin-top:12px;"></p>
-    <button onclick="document.getElementById('account-modal').style.display='none';" style="width:100%; margin-top:14px; background:none; border:none; color:#9FADC7; font-size:13px; cursor:pointer;">Fechar</button>
+    <button onclick="document.getElementById('account-modal').style.display='none';" style="width:100%; margin-top:14px; background:none; border:none; color:#9FADC7; font-size:13px; cursor:pointer;">Close</button>
   </div>
 </div>
 
@@ -438,7 +438,7 @@
       <div class="stat-card">
         <div class="stat-label">Documents processed</div>
         <div class="stat-value" id="stat-processed-count">—</div>
-        <div class="stat-delta">pela IA</div>
+        <div class="stat-delta">by AI</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Upcoming deadlines</div>
@@ -450,7 +450,7 @@
     <div class="panel">
       <div class="panel-head">
         <div class="panel-title">Recent activity</div>
-        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">Ver tudo →</a>
+        <a class="link" onclick="document.querySelector('[data-screen=documentos]').click()">View all →</a>
       </div>
       <div id="dashboard-activity">
         <p style="color:var(--ink-soft); font-size:13px;">Loading…</p>
@@ -459,7 +459,7 @@
   </section>
 
   <!-- DOCUMENTOS -->
-  <section class="screen" id="documents">
+  <section class="screen" id="documentos">
     <div class="topline">
       <div>
         <div class="eyebrow">Gestão de documents</div>
@@ -469,8 +469,8 @@
     </div>
 
     <div class="dropzone">
-      <div class="dropzone-title">Arraste arquivos aqui</div>
-      <div class="dropzone-sub">PDF, Word, Excel ou imagens · a IA identifica o tipo e organiza sozinha</div>
+      <div class="dropzone-title">Drag files here</div>
+      <div class="dropzone-sub">PDF, Word, Excel, or images · AI identifies the type and organizes them automatically</div>
       <input type="file" id="file-input" multiple style="display:none;" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*">
       <button class="btn btn-ghost" onclick="document.getElementById('file-input').click()">Select files</button>
       <p id="upload-status" style="font-size:12px; color:var(--ink-soft); margin-top:10px;"></p>
@@ -523,7 +523,7 @@
       <div>
         <div class="eyebrow">Automations</div>
         <h1 class="page-title">Automations</h1>
-        <p class="page-sub">Tarefas que a Tasklyn executa sozinha, sempre que um documento entra no sistema.</p>
+        <p class="page-sub">Tasks Tasklyn performs automatically whenever a document enters the system.</p>
       </div>
     </div>
 
@@ -533,7 +533,7 @@
           <div class="auto-ico">◐</div>
           <div>
             <div class="auto-name">Resumir documents novos</div>
-            <div class="auto-desc">Todo arquivo enviado é analisado pela IA automaticamente (resumo, categoria e vencimento).</div>
+            <div class="auto-desc">Todo arquivo enviado é analisado by AI automaticamente (resumo, categoria e vencimento).</div>
           </div>
         </div>
         <div class="switch" data-key="resumir"></div>
@@ -543,7 +543,7 @@
         <div class="auto-left">
           <div class="auto-ico">◷</div>
           <div>
-            <div class="auto-name">Avisar sobre vencimentos</div>
+            <div class="auto-name">Expiration alerts</div>
             <div class="auto-desc">Mostra no Dashboard os documents com vencimento nos next 7 days.</div>
           </div>
         </div>
@@ -555,7 +555,7 @@
           <div class="auto-ico">▤</div>
           <div>
             <div class="auto-name">Organize incoming files</div>
-            <div class="auto-desc">Classifica cada documento em Contratos, Financeiro, Clientes ou Outros com base no conteúdo.</div>
+            <div class="auto-desc">Classifies each document as Contracts, Finance, Clients, or Other based on its content.</div>
           </div>
         </div>
         <div class="switch" data-key="organizar"></div>
@@ -566,7 +566,7 @@
           <div class="auto-ico">✉</div>
           <div>
             <div class="auto-name">Draft reply emails <span class="stamp summary" style="margin-left:4px;">coming soon</span></div>
-            <div class="auto-desc">Gera um rascunho de e-mail baseado no documento recebido, para revisão.</div>
+            <div class="auto-desc">Generates an email draft based on the received document for your review.</div>
           </div>
         </div>
         <div class="switch off" style="pointer-events:none;"></div>
@@ -586,7 +586,7 @@
   </section>
 
   <!-- PLANOS -->
-  <section class="screen" id="plans">
+  <section class="screen" id="planos">
     <div id="paywall-banner" style="display:none; background:var(--sage-soft); border:1px solid var(--sage); border-radius:12px; padding:16px 20px; margin-bottom:24px;">
       <strong style="color:var(--ink);">Subscribe to a plan to unlock Tasklyn.</strong>
       <p style="font-size:13px; color:var(--ink-soft); margin-top:4px;">Dashboard, Documents, AI Chat, and Automations become available as soon as payment is confirmed.</p>
@@ -891,7 +891,7 @@
             if (!procResponse.ok) {
               const rawText = await procResponse.text();
               let detail = rawText;
-              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* mantém texto puro */ }
+              try { detail = JSON.parse(rawText).error || rawText; } catch(e) { /* keep plain text */ }
               statusEl.textContent = `Error analyzing ${file.name}: ${detail}`;
               hadError = true;
             }
@@ -1029,7 +1029,7 @@
 
     try {
       const docs = window._tasklynDocs || [];
-      const docContext = docs.map(d => `- ${d.name} (categoria: ${d.category}, status: ${d.status}${d.due_date ? ', expires em ' + d.due_date : ''})`).join('\n');
+      const docContext = docs.map(d => `- ${d.name} (category: ${d.category}, status: ${d.status}${d.due_date ? ', expires em ' + d.due_date : ''})`).join('\n');
 
       const response = await fetch('/api/chat', {
         method: 'POST',
@@ -1043,7 +1043,7 @@
       if (!response.ok) {
         const rawText = await response.text();
         let detail = rawText;
-        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* mantém texto puro */ }
+        try { detail = JSON.parse(rawText).error || rawText; } catch (e) { /* keep plain text */ }
         throw new Error(`(${response.status}) ${detail}`);
       }
       const data = await response.json();
@@ -1123,7 +1123,7 @@
         await setAutomation(sw.dataset.key, wasOff); // wasOff=true significa que it is now being turned on
       } catch (err) {
         sw.classList.toggle('off'); // revert the visual change if saving fails
-        alert('Não foi possível salvar essa automação agora: ' + err.message);
+        alert('Could not save this automation right now: ' + err.message);
       }
     });
   });
@@ -1137,7 +1137,7 @@
         sw.classList.toggle('off', !enabled);
       });
     } catch (err) {
-      console.error('Falha ao carregar automações:', err);
+      console.error('Failed to load automations:', err);
     }
   }
   document.querySelectorAll('.chip').forEach(function(chip){
