@@ -6,46 +6,92 @@
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const { message, documents } = req.body || {};
+
   if (!message) {
-    return res.status(400).json({ error: 'Mensagem vazia' });
+    return res.status(400).json({ error: 'Empty message' });
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
+
   if (!apiKey) {
-    return res.status(500).json({ error: 'Chave da IA não configurada no servidor (ANTHROPIC_API_KEY ausente).' });
+    return res.status(500).json({
+      error: 'AI key is not configured on the server (ANTHROPIC_API_KEY missing).'
+    });
   }
 
   try {
-    const anthropicResponse = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 500,
-        system: `Você é a IA da Tasklyn, um assistente que ajuda empresas a organizar documentos administrativos (contratos, planilhas, e-mails). Responda em português, de forma direta e útil. Aqui está a lista de documentos reais da empresa no momento:\n\n${documents}\n\nSe a pergunta não puder ser respondida com base nesses documentos, diga isso claramente em vez de inventar informações.`,
-        messages: [
-          { role: 'user', content: message }
-        ]
-      })
-    });
+    const anthropicResponse = await fetch(
+      'https://api.anthropic.com/v1/messages',
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 500,
+
+          system: `
+You are Tasklyn AI, an AI assistant that helps businesses organize and manage administrative documents such as contracts, spreadsheets, emails, invoices, and other business files.
+
+IMPORTANT LANGUAGE RULE:
+You MUST respond exclusively in English.
+Never respond in Portuguese.
+Never mix Portuguese and English.
+All user-facing text, explanations, summaries, warnings, and answers must be written in English.
+
+Be direct, professional, helpful, and concise.
+
+You have access to the following real documents currently registered by the company:
+
+${documents || 'No documents are currently available.'}
+
+Answer questions using the available documents whenever possible.
+
+If the user's question cannot be answered using the available documents, clearly say that the information is not available in the provided documents.
+
+Never invent information.
+`,
+
+          messages: [
+            {
+              role: 'user',
+              content: message
+            }
+          ]
+        })
+      }
+    );
 
     if (!anthropicResponse.ok) {
       const errText = await anthropicResponse.text();
-      return res.status(502).json({ error: 'Erro da IA: ' + errText });
+
+      return res.status(502).json({
+        error: 'AI error: ' + errText
+      });
     }
 
     const data = await anthropicResponse.json();
-    const reply = data.content?.[0]?.text || 'Não consegui gerar uma resposta.';
-    return res.status(200).json({ reply });
+
+    const reply =
+      data.content?.[0]?.text ||
+      'I could not generate a response.';
+
+    return res.status(200).json({
+      reply
+    });
+
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message
+    });
   }
 }
