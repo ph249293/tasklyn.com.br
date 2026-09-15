@@ -512,7 +512,7 @@
         <div class="suggested-title">Quick questions</div>
         <div class="suggest-chip" onclick="sendSuggested(this)">Which documents expire soon?</div>
         <div class="suggest-chip" onclick="sendSuggested(this)">Summarize my most recent documents.</div>
-        <div class="suggest-chip" onclick="sendSuggested(this)">Quantos documents eu já enviei?</div>
+        <div class="suggest-chip" onclick="sendSuggested(this)">How many documents have I uploaded?</div>
       </div>
     </div>
   </section>
@@ -532,7 +532,7 @@
         <div class="auto-left">
           <div class="auto-ico">◐</div>
           <div>
-            <div class="auto-name">Resumir documents novos</div>
+            <div class="auto-name">Summarize new documents</div>
             <div class="auto-desc">Todo arquivo enviado é analisado by AI automaticamente (resumo, categoria e vencimento).</div>
           </div>
         </div>
@@ -609,7 +609,7 @@
         <div class="plan-name">Starter</div>
         <div class="plan-desc">For small teams getting their first documents organized.</div>
         <div class="plan-price">
-          <span class="amount" data-monthly="R$49" data-yearly="R$490">R$49</span>
+          <span class="amount" data-monthly="$9" data-yearly="$90">$9</span>
           <span class="period" data-monthly="/month" data-yearly="/year" >/month</span>
         </div>
         <ul class="feat-list">
@@ -627,7 +627,7 @@
         <div class="plan-name">Pro</div>
         <div class="plan-desc">For offices managing multiple clients and recurring deadlines.</div>
         <div class="plan-price">
-          <span class="amount" data-monthly="R$149" data-yearly="R$1.490">R$149</span>
+          <span class="amount" data-monthly="$29" data-yearly="$290">$29</span>
           <span class="period" data-monthly="/month" data-yearly="/year" >/month</span>
         </div>
         <ul class="feat-list">
@@ -652,7 +652,7 @@
           <li class="feat-row">Custom automations</li>
           <li class="feat-row">Dedicated account manager</li>
         </ul>
-        <a class="btn btn-ghost plan-cta" href="mailto:suporte.tasklyn@gmail.com?subject=Interesse%20no%20plano%20Enterprise%20da%20Tasklyn&body=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20plano%20Enterprise%20da%20Tasklyn%20para%20a%20minha%20empresa.">Talk to sales</a>
+        <a class="btn btn-ghost plan-cta" href="mailto:suporte.tasklyn@gmail.com?subject=Interest%20in%20Tasklyn%20Enterprise%20Plan&body=Hello%2C%20I%20would%20like%20to%20learn%20more%20about%20the%20Tasklyn%20Enterprise%20plan%20for%20my%20company.">Talk to sales</a>
       </div>
     </div>
 
@@ -1029,13 +1029,13 @@
 
     try {
       const docs = window._tasklynDocs || [];
-      const docContext = docs.map(d => `- ${d.name} (category: ${d.category}, status: ${d.status}${d.due_date ? ', expires em ' + d.due_date : ''})`).join('\n');
+      const docContext = docs.map(d => `- ${d.name} (category: ${d.category}, status: ${d.status}${d.due_date ? ', expires on ' + d.due_date : ''})`).join('\n');
 
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: text,
+          message: `IMPORTANT: Respond ONLY in English. Do not use Portuguese. Translate any document titles or category/status labels into English when referring to them. User question: ${text}`,
           documents: docContext || 'No documents uploaded yet.'
         })
       });
