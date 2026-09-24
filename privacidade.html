@@ -1,102 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Política de Privacidade — Tasklyn</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#16233D; --ink-soft:#3B4A68; --paper:#F1F1EC; --paper-card:#FBFBF8;
-    --gold:#C89B3C; --gold-deep:#9C7626; --line:#DEDCD2;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{font-family:'IBM Plex Sans',sans-serif; background:var(--paper); color:var(--ink); line-height:1.65; padding:40px 20px 80px;}
-  .wrap{max-width:680px; margin:0 auto;}
-  a.back{color:var(--gold-deep); font-weight:600; font-size:13px; text-decoration:none;}
-  h1{font-family:'Fraunces',serif; font-size:30px; margin:24px 0 6px;}
-  .updated{font-size:12.5px; color:var(--ink-soft); margin-bottom:32px;}
-  h2{font-family:'Fraunces',serif; font-size:18px; margin:28px 0 10px; color:var(--ink);}
-  p, li{font-size:14.5px; color:var(--ink-soft); margin-bottom:10px;}
-  ul{padding-left:20px;}
-  strong{color:var(--ink);}
-  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:13.5px;}
-  th, td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft); vertical-align:top;}
-  th{color:var(--ink); font-family:'IBM Plex Sans',sans-serif;}
-  .card{background:var(--paper-card); border:1px solid var(--line); border-radius:14px; padding:28px 26px; margin-top:20px;}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <a class="back" href="/index.html">← Voltar para a Tasklyn</a>
-  <h1>Política de Privacidade</h1>
-  <div class="updated">Última atualização: agosto de 2026</div>
-
-  <div class="card">
-    <p>Esta Política de Privacidade descreve como a <strong>Tasklyn</strong> coleta, usa, armazena e protege dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018).</p>
-
-    <h2>1. Quem é o controlador dos dados</h2>
-    <p>A Tasklyn é responsável pelo tratamento dos dados descritos nesta política. Dúvidas ou solicitações relacionadas a dados pessoais podem ser enviadas para <strong>suporte.tasklyn@gmail.com</strong>.</p>
-
-    <h2>2. Quais dados coletamos</h2>
-    <table>
-      <tr><th>Dado</th><th>Quando é coletado</th></tr>
-      <tr><td>E-mail e senha</td><td>No cadastro da conta</td></tr>
-      <tr><td>Documentos enviados (PDFs, planilhas, imagens, Word)</td><td>Quando você faz upload na plataforma</td></tr>
-      <tr><td>Conteúdo das mensagens no Chat com IA</td><td>Quando você usa o chat</td></tr>
-      <tr><td>Dados de pagamento (processados pela Stripe, não armazenados por nós)</td><td>Na assinatura de um plano</td></tr>
-    </table>
-
-    <h2>3. Para que usamos esses dados</h2>
-    <ul>
-      <li>Autenticar seu acesso à plataforma;</li>
-      <li>Armazenar e organizar os documentos que você envia;</li>
-      <li>Processar esses documentos com inteligência artificial para gerar resumos, categorias e identificar vencimentos;</li>
-      <li>Responder perguntas feitas no Chat com IA, com base nos seus próprios documentos;</li>
-      <li>Processar pagamentos e gerenciar sua assinatura;</li>
-      <li>Enviar comunicações essenciais sobre sua conta.</li>
-    </ul>
-    <p>Não vendemos seus dados a terceiros, nem os usamos para publicidade.</p>
-
-    <h2>4. Com quem compartilhamos dados</h2>
-    <p>Para operar a Tasklyn, utilizamos os seguintes prestadores de serviço (operadores, na definição da LGPD), que processam dados em nosso nome:</p>
-    <table>
-      <tr><th>Serviço</th><th>Finalidade</th></tr>
-      <tr><td>Supabase</td><td>Armazenamento do banco de dados e dos arquivos enviados</td></tr>
-      <tr><td>Anthropic (Claude)</td><td>Processamento de IA para resumir documentos e responder no chat</td></tr>
-      <tr><td>Stripe</td><td>Processamento de pagamentos e cobrança recorrente</td></tr>
-      <tr><td>Vercel</td><td>Hospedagem do site e das funções do servidor</td></tr>
-    </table>
-    <p>Esses prestadores têm acesso apenas ao necessário para prestar seus serviços e possuem suas próprias políticas de segurança e privacidade.</p>
-
-    <h2>5. Por quanto tempo guardamos seus dados</h2>
-    <p>Mantemos seus dados enquanto sua conta estiver ativa. Após o cancelamento, os dados podem ser mantidos por um período adicional para cumprimento de obrigações legais ou resolução de disputas, sendo excluídos ou anonimizados posteriormente, mediante solicitação.</p>
-
-    <h2>6. Seus direitos como titular de dados</h2>
-    <p>De acordo com a LGPD, você tem direito a:</p>
-    <ul>
-      <li>Confirmar a existência de tratamento dos seus dados;</li>
-      <li>Acessar os dados que temos sobre você;</li>
-      <li>Corrigir dados incompletos, inexatos ou desatualizados;</li>
-      <li>Solicitar a exclusão dos seus dados (exceto quando a manutenção for exigida por lei);</li>
-      <li>Solicitar a portabilidade dos seus dados a outro fornecedor;</li>
-      <li>Revogar o consentimento, quando aplicável.</li>
-    </ul>
-    <p>Essas solicitações podem ser feitas por e-mail em <strong>suporte.tasklyn@gmail.com</strong>.</p>
-
-    <h2>7. Segurança</h2>
-    <p>Seus documentos são armazenados de forma criptografada e o acesso é restrito à sua própria conta, protegido por autenticação. Ainda assim, nenhum sistema é 100% livre de riscos; recomendamos manter sua senha segura e não compartilhá-la.</p>
-
-    <h2>8. Documentos de terceiros</h2>
-    <p>Se os documentos que você envia contiverem dados pessoais de terceiros (ex: clientes da sua empresa, como nome, CPF ou dados de contrato), você declara ter base legal adequada para o tratamento desses dados dentro da Tasklyn, sendo o Cliente responsável por essa conformidade perante seus próprios clientes.</p>
-
-    <h2>9. Alterações nesta política</h2>
-    <p>Podemos atualizar esta Política de Privacidade periodicamente. Alterações significativas serão comunicadas por e-mail ou aviso no site.</p>
-
-    <h2>10. Contato</h2>
-    <p>Para exercer seus direitos ou tirar dúvidas sobre esta política, entre em contato: <strong>suporte.tasklyn@gmail.com</strong>.</p>
-  </div>
-</div>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Privacy Policy — Tasklyn</title><style>body{font:16px/1.65 Arial,sans-serif;max-width:760px;margin:40px auto;padding:0 20px;background:#f1f1ec;color:#16233d}main{background:#fbfbf8;border:1px solid #dedcd2;border-radius:14px;padding:28px}h1,h2{font-family:Georgia,serif}h2{margin-top:28px}a{color:#9c7626}</style></head><body><a href="/index.html">← Back to Tasklyn</a><h1>Privacy Policy</h1><p>Last updated: September 24, 2026</p><main>
+<p>This Privacy Policy explains how <b>[LEGAL COMPANY NAME]</b>, doing business as <b>Tasklyn</b> (“Tasklyn,” “we,” “us”), collects, uses, stores, and shares information through <a href="https://tasklyn.io">tasklyn.io</a> and related services. Tasklyn is designed for business customers, including law firms, clinics, real estate businesses, and consulting firms.</p>
+<p><b>Company:</b> [Legal company name], organized in [State/Country], with a principal business address at [Address]. Privacy contact: <b>support.tasklyn@gmail.com</b>.</p>
+<h2>1. Our Role</h2><p>Tasklyn offers AI-assisted tools to upload, organize, summarize, and ask questions about business documents, identify possible dates and deadlines, and use related workflow features. Depending on the context and applicable law, we may act as a service provider/processor for customer content and as a business/controller for account and billing information.</p>
+<h2>2. Information We Collect</h2><ul><li>Account information, such as work email and login credentials.</li><li>Files uploaded by customers, including PDFs, spreadsheets, images, and Word documents.</li><li>Prompts, questions, and content submitted through AI Chat.</li><li>Subscription and transaction details. Stripe processes payment card information; Tasklyn does not store card numbers.</li><li>Technical and usage information needed to operate, secure, and troubleshoot the Service; confirm the exact data collected before publication.</li></ul>
+<h2>3. How We Use Information</h2><ul><li>Authenticate and maintain accounts.</li><li>Store and organize uploaded documents.</li><li>Use AI to summarize documents, categorize content, and identify possible dates or deadlines.</li><li>Answer questions based on customer-provided documents.</li><li>Process payments and manage subscriptions.</li><li>Secure, troubleshoot, and support the Service and send essential account communications.</li></ul><p>We do not sell personal information. Verify analytics, advertising, and vendor practices before making broader claims about sharing.</p>
+<h2>4. Service Providers</h2><table><tr><th>Provider</th><th>Purpose</th></tr><tr><td>Supabase</td><td>Database, authentication, and file storage</td></tr><tr><td>Anthropic (Claude)</td><td>AI processing for summaries and chat responses</td></tr><tr><td>Stripe</td><td>Payment processing and recurring billing</td></tr><tr><td>Vercel</td><td>Website hosting and server functions</td></tr></table><p>We may also disclose information when legally required, to protect rights and safety, or in a business transfer. Verify vendor roles, locations, and contracts before publishing.</p>
+<h2>5. Retention and Deletion</h2><p>We retain information as needed to provide the Service, maintain accounts, resolve disputes, and meet legal obligations. The exact post-cancellation deletion schedule and backup-retention periods must be established before publication.</p>
+<h2>6. Privacy Rights</h2><p>Depending on applicable law, individuals may have rights to request access, correction, deletion, or a copy of personal information, or to object to or limit certain processing. Contact <b>support.tasklyn@gmail.com</b>. We may verify identity and authority. State privacy laws, including California’s CCPA as amended by the CPRA, apply only when their legal requirements are met.</p>
+<h2>7. Security</h2><p>We use safeguards intended to protect information, but no online service can guarantee absolute security. Verify claims about encryption, access controls, backups, and certifications against the actual configuration.</p>
+<h2>8. Customer Content and Third-Party Data</h2><p>Customers are responsible for having a lawful basis and permissions to upload information about clients, employees, patients, tenants, or others. Do not upload content you are not authorized to share with Tasklyn or its providers.</p><p><b>Health information:</b> Do not upload protected health information (PHI) subject to HIPAA unless Tasklyn has confirmed in writing that the Service and relevant vendors support the required safeguards and all required Business Associate Agreements (BAAs) are in place. This policy is not a HIPAA compliance certification.</p>
+<h2>9. International Transfers</h2><p>Tasklyn and its providers may process information in other countries. Identify actual processing locations and applicable transfer safeguards before publication.</p>
+<h2>10. Age Requirement</h2><p>The Service is intended for business users who are at least 18 years old and authorized to act for a business. We do not knowingly offer accounts to individuals under 18.</p>
+<h2>11. Policy Changes</h2><p>We may update this policy and revise the date above. Where required, we will provide additional notice or obtain consent.</p>
+<h2>12. Contact</h2><p>Privacy questions: <b>support.tasklyn@gmail.com</b>. Insert verified legal company name and business address before publishing.</p>
+</main></body></html>
